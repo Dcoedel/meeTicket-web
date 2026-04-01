@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>meeTicket — Politica de Privacidad / Privacy Policy</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f0f1a; color: #d1d5db; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; }
+    .container { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+    .logo { text-align: center; margin-bottom: 32px; }
+    .logo h1 { color: #6c63ff; font-size: 28px; font-weight: 800; }
+    .logo p { color: #6b7280; font-size: 14px; }
+    .lang-switch { text-align: center; margin-bottom: 32px; display: flex; gap: 8px; justify-content: center; }
+    .lang-switch button { background: #1e1e2e; border: 1px solid #2d2d4e; color: #9ca3af; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+    .lang-switch button.active { background: #6c63ff; color: #fff; border-color: #6c63ff; }
+    h2 { color: #fff; font-size: 20px; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #1e1e2e; }
+    h3 { color: #a78bfa; font-size: 16px; margin: 20px 0 8px; }
+    p, li { margin-bottom: 8px; font-size: 15px; }
+    ul { padding-left: 20px; }
+    a { color: #6c63ff; }
+    .date { color: #6b7280; font-size: 13px; text-align: center; margin-bottom: 24px; }
+    .section { background: #1e1e2e; border-radius: 12px; padding: 20px; margin-bottom: 16px; border: 1px solid #2d2d4e; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>meeTicket</h1>
+      <p>Ticketera social</p>
+    </div>
+
+    <div class="lang-switch">
+      <button class="active" onclick="showLang('es')">Espanol</button>
+      <button onclick="showLang('en')">English</button>
+    </div>
+
+    <!-- ═══ ESPANOL ═══ -->
+    <div id="es">
+      <p class="date">Ultima actualizacion: 1 de abril de 2026</p>
+
+      <h2>Politica de Privacidad</h2>
+
+      <div class="section">
+        <h3>1. Responsable del tratamiento</h3>
+        <p>Daniel Coello Delgado<br>Email: <a href="mailto:dcoedel@gmail.com">dcoedel@gmail.com</a></p>
+        <p>meeTicket es una aplicacion de compra de entradas y networking social para eventos.</p>
+      </div>
+
+      <div class="section">
+        <h3>2. Datos que recopilamos</h3>
+        <p><strong>Datos de cuenta:</strong> nombre, email, telefono (opcional), fecha de nacimiento, foto de perfil.</p>
+        <p><strong>Datos de perfil social:</strong> intereses, frase de presentacion, genero (opcional), ciudad, idiomas, preferencias de matching.</p>
+        <p><strong>Datos de compra:</strong> historial de pedidos, entradas compradas. Los datos bancarios son procesados directamente por Stripe y nunca pasan por nuestros servidores.</p>
+        <p><strong>Datos de ubicacion:</strong> coordenadas GPS cuando activas voluntariamente la funcion de geolocalizacion para verificar tu presencia en un evento o usar "Y si nos conocemos". Tu ubicacion exacta nunca se comparte con otros usuarios.</p>
+        <p><strong>Datos de comunicacion:</strong> mensajes de chat cifrados de extremo a extremo (E2E). Solo el remitente y el destinatario pueden leer el contenido. Nuestros servidores almacenan los mensajes cifrados sin poder acceder a su contenido.</p>
+        <p><strong>Datos tecnicos:</strong> tipo de dispositivo, sistema operativo, tokens de notificaciones push.</p>
+      </div>
+
+      <div class="section">
+        <h3>3. Base legal del tratamiento</h3>
+        <ul>
+          <li><strong>Ejecucion del contrato:</strong> procesamiento de compras, entrega de entradas, gestion de la cuenta.</li>
+          <li><strong>Consentimiento:</strong> funciones sociales (matching, chat, geolocalizacion), notificaciones push, cookies.</li>
+          <li><strong>Interes legitimo:</strong> prevencion del fraude, seguridad de la plataforma, mejora del servicio.</li>
+          <li><strong>Obligacion legal:</strong> conservacion de facturas durante 5 anos (Ley 58/2003).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>4. Finalidad del tratamiento</h3>
+        <ul>
+          <li>Gestionar tu cuenta y autenticacion.</li>
+          <li>Procesar compras de entradas y gestionar pagos via Stripe.</li>
+          <li>Permitir el matching con otros asistentes a eventos.</li>
+          <li>Facilitar la comunicacion cifrada entre usuarios.</li>
+          <li>Verificar tu presencia en eventos mediante geolocalizacion.</li>
+          <li>Enviar notificaciones sobre tus entradas, matches y eventos.</li>
+          <li>Prevenir fraude y garantizar la seguridad de la plataforma.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>5. Comparticion de datos</h3>
+        <p>No vendemos tus datos a terceros. Compartimos datos unicamente con:</p>
+        <ul>
+          <li><strong>Stripe:</strong> procesamiento de pagos (PCI DSS compliant).</li>
+          <li><strong>Resend:</strong> envio de emails transaccionales.</li>
+          <li><strong>Firebase/Expo:</strong> notificaciones push.</li>
+          <li><strong>Railway:</strong> infraestructura de servidores (UE).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>6. Cifrado y seguridad</h3>
+        <ul>
+          <li>Los mensajes de chat estan cifrados de extremo a extremo con el protocolo X3DH + ChaCha20-Poly1305.</li>
+          <li>Las contrasenas se almacenan con hash Argon2.</li>
+          <li>La autenticacion usa JWT RS256 con claves asimetricas.</li>
+          <li>Todas las comunicaciones usan TLS 1.2+.</li>
+          <li>Los avatares se cifran en reposo con AES-256-GCM.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>7. Conservacion de datos</h3>
+        <ul>
+          <li>Datos de cuenta: mientras la cuenta este activa.</li>
+          <li>Mensajes de chat: se eliminan automaticamente cuando el chat expira (24h tras el evento).</li>
+          <li>Datos de geolocalizacion: solo en memoria temporal (Redis con TTL de 30 segundos), nunca almacenados permanentemente.</li>
+          <li>Facturas: 5 anos (obligacion legal).</li>
+          <li>Logs de seguridad: 12 meses.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>8. Tus derechos (RGPD)</h3>
+        <p>Puedes ejercer los siguientes derechos en cualquier momento:</p>
+        <ul>
+          <li><strong>Acceso:</strong> solicitar una copia de todos tus datos (Art. 15).</li>
+          <li><strong>Rectificacion:</strong> corregir datos incorrectos (Art. 16).</li>
+          <li><strong>Supresion:</strong> eliminar tu cuenta y todos tus datos (Art. 17).</li>
+          <li><strong>Portabilidad:</strong> descargar tus datos en formato JSON (Art. 20).</li>
+          <li><strong>Oposicion:</strong> oponerte al tratamiento de tus datos (Art. 21).</li>
+          <li><strong>Limitacion:</strong> restringir el uso de tus datos (Art. 18).</li>
+        </ul>
+        <p>Para ejercer tus derechos, contacta con <a href="mailto:dcoedel@gmail.com">dcoedel@gmail.com</a> o usa la seccion "Mi privacidad" dentro de la app.</p>
+        <p>Tambien puedes presentar una reclamacion ante la <a href="https://www.aepd.es">Agencia Espanola de Proteccion de Datos (AEPD)</a>.</p>
+      </div>
+
+      <div class="section">
+        <h3>9. Menores de edad</h3>
+        <p>meeTicket no esta dirigida a menores de 18 anos. No recopilamos conscientemente datos de menores. Si descubrimos que un menor ha creado una cuenta, la eliminaremos inmediatamente.</p>
+      </div>
+
+      <div class="section">
+        <h3>10. Cambios en esta politica</h3>
+        <p>Podemos actualizar esta politica periodicamente. Te notificaremos de cambios significativos a traves de la app o por email.</p>
+      </div>
+    </div>
+
+    <!-- ═══ ENGLISH ═══ -->
+    <div id="en" class="hidden">
+      <p class="date">Last updated: April 1, 2026</p>
+
+      <h2>Privacy Policy</h2>
+
+      <div class="section">
+        <h3>1. Data Controller</h3>
+        <p>Daniel Coello Delgado<br>Email: <a href="mailto:dcoedel@gmail.com">dcoedel@gmail.com</a></p>
+        <p>meeTicket is a ticket purchasing and social networking application for events.</p>
+      </div>
+
+      <div class="section">
+        <h3>2. Data We Collect</h3>
+        <p><strong>Account data:</strong> name, email, phone (optional), date of birth, profile photo.</p>
+        <p><strong>Social profile data:</strong> interests, bio, gender (optional), city, languages, matching preferences.</p>
+        <p><strong>Purchase data:</strong> order history, purchased tickets. Payment card data is processed directly by Stripe and never touches our servers.</p>
+        <p><strong>Location data:</strong> GPS coordinates when you voluntarily activate geolocation to verify your presence at an event or use the "What if we meet?" feature. Your exact location is never shared with other users.</p>
+        <p><strong>Communication data:</strong> end-to-end encrypted (E2E) chat messages. Only the sender and recipient can read the content. Our servers store encrypted messages without being able to access their content.</p>
+        <p><strong>Technical data:</strong> device type, operating system, push notification tokens.</p>
+      </div>
+
+      <div class="section">
+        <h3>3. Legal Basis</h3>
+        <ul>
+          <li><strong>Contract performance:</strong> purchase processing, ticket delivery, account management.</li>
+          <li><strong>Consent:</strong> social features (matching, chat, geolocation), push notifications, cookies.</li>
+          <li><strong>Legitimate interest:</strong> fraud prevention, platform security, service improvement.</li>
+          <li><strong>Legal obligation:</strong> invoice retention for 5 years (Spanish Law 58/2003).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>4. Purpose of Processing</h3>
+        <ul>
+          <li>Manage your account and authentication.</li>
+          <li>Process ticket purchases and manage payments via Stripe.</li>
+          <li>Enable matching with other event attendees.</li>
+          <li>Facilitate encrypted communication between users.</li>
+          <li>Verify your presence at events through geolocation.</li>
+          <li>Send notifications about your tickets, matches, and events.</li>
+          <li>Prevent fraud and ensure platform security.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>5. Data Sharing</h3>
+        <p>We do not sell your data to third parties. We share data only with:</p>
+        <ul>
+          <li><strong>Stripe:</strong> payment processing (PCI DSS compliant).</li>
+          <li><strong>Resend:</strong> transactional email delivery.</li>
+          <li><strong>Firebase/Expo:</strong> push notifications.</li>
+          <li><strong>Railway:</strong> server infrastructure (EU).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>6. Encryption & Security</h3>
+        <ul>
+          <li>Chat messages are end-to-end encrypted using X3DH + ChaCha20-Poly1305 protocol.</li>
+          <li>Passwords are stored with Argon2 hashing.</li>
+          <li>Authentication uses JWT RS256 with asymmetric keys.</li>
+          <li>All communications use TLS 1.2+.</li>
+          <li>Avatars are encrypted at rest with AES-256-GCM.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>7. Data Retention</h3>
+        <ul>
+          <li>Account data: as long as the account is active.</li>
+          <li>Chat messages: automatically deleted when the chat expires (24h after the event).</li>
+          <li>Geolocation data: only in temporary memory (Redis with 30-second TTL), never stored permanently.</li>
+          <li>Invoices: 5 years (legal obligation).</li>
+          <li>Security logs: 12 months.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>8. Your Rights (GDPR)</h3>
+        <p>You may exercise the following rights at any time:</p>
+        <ul>
+          <li><strong>Access:</strong> request a copy of all your data (Art. 15).</li>
+          <li><strong>Rectification:</strong> correct inaccurate data (Art. 16).</li>
+          <li><strong>Erasure:</strong> delete your account and all your data (Art. 17).</li>
+          <li><strong>Portability:</strong> download your data in JSON format (Art. 20).</li>
+          <li><strong>Objection:</strong> object to the processing of your data (Art. 21).</li>
+          <li><strong>Restriction:</strong> restrict the use of your data (Art. 18).</li>
+        </ul>
+        <p>To exercise your rights, contact <a href="mailto:dcoedel@gmail.com">dcoedel@gmail.com</a> or use the "My Privacy" section within the app.</p>
+        <p>You may also file a complaint with the <a href="https://www.aepd.es">Spanish Data Protection Agency (AEPD)</a>.</p>
+      </div>
+
+      <div class="section">
+        <h3>9. Children</h3>
+        <p>meeTicket is not intended for users under 18 years of age. We do not knowingly collect data from minors. If we discover that a minor has created an account, we will delete it immediately.</p>
+      </div>
+
+      <div class="section">
+        <h3>10. Changes to This Policy</h3>
+        <p>We may update this policy periodically. We will notify you of significant changes through the app or by email.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showLang(lang) {
+      document.getElementById('es').classList.toggle('hidden', lang !== 'es');
+      document.getElementById('en').classList.toggle('hidden', lang !== 'en');
+      document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
