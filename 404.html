@@ -28,22 +28,22 @@
   <div class="container">
     <div class="logo">meeTicket</div>
     <div class="card">
-      <!-- Claim: abriendo la app -->
+      <!-- Abriendo la app -->
       <div id="state-loading" class="hidden">
         <div class="spinner"></div>
         <h2>Abriendo meeTicket...</h2>
-        <p>Te llevamos a la app para añadir tu invitación.</p>
+        <p>Te llevamos a la app.</p>
       </div>
 
-      <!-- Claim: app no instalada -->
+      <!-- App no instalada -->
       <div id="state-fallback" class="hidden">
         <div class="icon">&#127915;</div>
-        <h2>Tienes una invitacion a un evento</h2>
-        <p>Abrela en meeTicket para anadirla a tu cuenta y descubrir quien mas va al evento.</p>
+        <h2 id="fallback-title">Abre meeTicket</h2>
+        <p id="fallback-body">Descarga la app para continuar.</p>
         <!-- TODO: reemplazar con el App Store ID real cuando se publique (igual que /transfer) -->
         <a href="https://apps.apple.com/app/meeticket" class="btn">Descargar meeTicket gratis</a>
         <a href="#" id="retry-link" class="btn-outline">Ya tengo la app — reintentar</a>
-        <p class="subtle">Tras instalar, vuelve a pulsar el enlace de tu invitacion para anadirla.</p>
+        <p class="subtle">Tras instalar, vuelve a pulsar este enlace.</p>
       </div>
 
       <!-- 404 generico -->
@@ -70,30 +70,42 @@
         el.classList.remove('hidden');
       }
 
-      // Detectar /claim/<token> en el path (el enlace de claim es path-based)
-      var match = window.location.pathname.match(/^\/claim\/([^\/]+)\/?$/);
-      if (!match || !match[1]) {
+      // Determinar el deep link y el texto segun el path (path-based, igual que /claim)
+      var path = window.location.pathname;
+      var deepLink = null, title = '', body = '', m;
+
+      if (m = path.match(/^\/claim\/([^\/]+)\/?$/)) {
+        var token = decodeURIComponent(m[1]);
+        deepLink = 'meeticket://claim/' + encodeURIComponent(token);
+        title = 'Tienes una invitacion a un evento';
+        body = 'Abrela en meeTicket para anadirla a tu cuenta y descubrir quien mas va al evento.';
+      } else if (path.match(/^\/tickets\/?$/)) {
+        deepLink = 'meeticket://tickets';
+        title = 'Tus entradas te esperan';
+        body = 'Abrelas en la app meeTicket para ver tus entradas y el QR de acceso.';
+      } else if (m = path.match(/^\/events\/([^\/]+)\/?$/)) {
+        deepLink = 'meeticket://event/' + encodeURIComponent(decodeURIComponent(m[1]));
+        title = 'Descubre el evento';
+        body = 'Abrelo en la app meeTicket para ver los detalles y comprar entradas.';
+      }
+
+      if (!deepLink) {
         show(state404);
         return;
       }
 
-      var token = decodeURIComponent(match[1]);
-      // Esquema custom que iOS (DeepLinkRouter, Capa 1C) parsea: host="claim", path=token
-      var deepLink = 'meeticket://claim/' + encodeURIComponent(token);
-      var fallbackTimer;
+      document.getElementById('fallback-title').textContent = title;
+      document.getElementById('fallback-body').textContent = body;
 
+      var fallbackTimer;
       function tryOpenApp() {
         show(loading);
         // Si la pagina sigue visible tras 2.5s, la app no se abrio (no instalada)
-        fallbackTimer = setTimeout(function () {
-          show(fallback);
-        }, 2500);
-
+        fallbackTimer = setTimeout(function () { show(fallback); }, 2500);
         // Si la pagina pasa a segundo plano (app abierta), cancelar el fallback
         document.addEventListener('visibilitychange', function () {
           if (document.hidden) { clearTimeout(fallbackTimer); }
         });
-
         window.location.href = deepLink;
       }
 
