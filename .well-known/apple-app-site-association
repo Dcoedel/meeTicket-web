@@ -4,7 +4,16 @@
     "details": [
       {
         "appID": "36D47TK5KR.com.dcoedel.meeticket",
-        "paths": ["/claim/*", "/tickets", "/events/*", "/reset-password", "/reset-password/*"]
+        "paths": [
+          "/claim/*",
+          "/tickets",
+          "/tickets/*",
+          "/events/*",
+          "/reset-password",
+          "/reset-password/*",
+          "/verify-email",
+          "/verify-email/*"
+        ]
       }
     ]
   }
