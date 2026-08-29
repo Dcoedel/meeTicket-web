@@ -21,6 +21,9 @@
     .btn-outline { display: inline-block; background: transparent; color: #6c63ff; text-decoration: none; padding: 10px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; margin-top: 12px; border: 1px solid #6c63ff; }
     .btn-outline:hover { background: rgba(108, 99, 255, 0.1); }
     .hidden { display: none; }
+    .code-box { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; }
+    .code { font-family: ui-monospace, Menlo, monospace; font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #fff; background: #0f0f1a; border: 1px solid #2d2d4e; border-radius: 8px; padding: 8px 14px; }
+    .instructions { font-size: 13px; color: #6b7280; margin-top: 16px; line-height: 1.7; }
     .subtle { font-size: 13px; color: #6b7280; margin-top: 16px; }
   </style>
 </head>
@@ -43,6 +46,13 @@
         <!-- TODO: reemplazar con el App Store ID real cuando se publique (igual que /transfer) -->
         <a href="https://apps.apple.com/app/meeticket" class="btn">Descargar meeTicket gratis</a>
         <a href="#" id="retry-link" class="btn-outline">Ya tengo la app — reintentar</a>
+        <div id="group-extra" class="hidden">
+          <div class="code-box">
+            <span id="group-code" class="code"></span>
+            <button id="copy-code" class="btn-outline" style="margin-top:0;">Copiar</button>
+          </div>
+          <p class="instructions">Tras instalar: abre meeTicket &rarr; pestana <b>Conectar</b> &rarr; tu evento &rarr; <b>Grupos</b> &rarr; <b>Unirse por enlace</b> y pega este codigo.</p>
+        </div>
         <p class="subtle">Tras instalar, vuelve a pulsar este enlace.</p>
       </div>
 
@@ -87,6 +97,18 @@
         deepLink = 'meeticket://event/' + encodeURIComponent(decodeURIComponent(m[1]));
         title = 'Descubre el evento';
         body = 'Abrelo en la app meeTicket para ver los detalles y comprar entradas.';
+      } else if (m = path.match(/^\/c\/([^\/]+)\/?$/)) {
+        // Invitacion a un GRUPO (meeticket.app/c/<codigo>). Muestra el codigo + copiar + instrucciones.
+        var groupCode = decodeURIComponent(m[1]);
+        deepLink = 'meeticket://c/' + encodeURIComponent(groupCode);
+        title = 'Te han invitado a un grupo en meeTicket';
+        body = 'Abrelo en la app para unirte al grupo del evento.';
+        document.getElementById('group-code').textContent = groupCode;
+        document.getElementById('group-extra').classList.remove('hidden');
+        var copyBtn = document.getElementById('copy-code');
+        copyBtn.addEventListener('click', function () {
+          navigator.clipboard.writeText(groupCode).then(function () { copyBtn.textContent = 'Copiado'; });
+        });
       }
 
       if (!deepLink) {

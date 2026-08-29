@@ -6,6 +6,7 @@
         "appID": "36D47TK5KR.com.dcoedel.meeticket",
         "paths": [
           "/claim/*",
+          "/c/*",
           "/tickets",
           "/tickets/*",
           "/events/*",
