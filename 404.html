@@ -4,141 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>meeTicket</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0f0f1a; color: #d1d5db; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-    .container { text-align: center; padding: 40px 24px; max-width: 480px; }
-    .logo { color: #6c63ff; font-size: 28px; font-weight: 800; margin-bottom: 32px; }
-    .card { background: #1e1e2e; border-radius: 16px; padding: 32px 24px; border: 1px solid #2d2d4e; }
-    .icon { font-size: 48px; margin-bottom: 16px; }
-    h2 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    p { font-size: 15px; line-height: 1.6; margin-bottom: 16px; color: #9ca3af; }
-    .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #2d2d4e; border-top-color: #6c63ff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .error { color: #f87171; }
-    .btn { display: inline-block; background: #6c63ff; color: #fff; text-decoration: none; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 15px; margin-top: 8px; }
-    .btn:hover { background: #5b54e0; }
-    .btn-outline { display: inline-block; background: transparent; color: #6c63ff; text-decoration: none; padding: 10px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; margin-top: 12px; border: 1px solid #6c63ff; }
-    .btn-outline:hover { background: rgba(108, 99, 255, 0.1); }
-    .hidden { display: none; }
-    .code-box { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; }
-    .code { font-family: ui-monospace, Menlo, monospace; font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #fff; background: #0f0f1a; border: 1px solid #2d2d4e; border-radius: 8px; padding: 8px 14px; }
-    .instructions { font-size: 13px; color: #6b7280; margin-top: 16px; line-height: 1.7; }
-    .subtle { font-size: 13px; color: #6b7280; margin-top: 16px; }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">meeTicket</div>
-    <div class="card">
-      <!-- Abriendo la app -->
-      <div id="state-loading" class="hidden">
-        <div class="spinner"></div>
-        <h2>Abriendo meeTicket...</h2>
-        <p>Te llevamos a la app.</p>
-      </div>
-
-      <!-- App no instalada -->
-      <div id="state-fallback" class="hidden">
-        <div class="icon">&#127915;</div>
-        <h2 id="fallback-title">Abre meeTicket</h2>
-        <p id="fallback-body">Descarga la app para continuar.</p>
-        <!-- TODO: reemplazar con el App Store ID real cuando se publique (igual que /transfer) -->
-        <a href="https://apps.apple.com/app/meeticket" class="btn">Descargar meeTicket gratis</a>
-        <a href="#" id="retry-link" class="btn-outline">Ya tengo la app — reintentar</a>
-        <div id="group-extra" class="hidden">
-          <div class="code-box">
-            <span id="group-code" class="code"></span>
-            <button id="copy-code" class="btn-outline" style="margin-top:0;">Copiar</button>
-          </div>
-          <p class="instructions">Tras instalar: abre meeTicket &rarr; pestana <b>Conectar</b> &rarr; tu evento &rarr; <b>Grupos</b> &rarr; <b>Unirse por enlace</b> y pega este codigo.</p>
-        </div>
-        <p class="subtle">Tras instalar, vuelve a pulsar este enlace.</p>
-      </div>
-
-      <!-- 404 generico -->
-      <div id="state-404" class="hidden">
-        <div class="icon">&#128279;</div>
-        <h2 class="error">Pagina no encontrada</h2>
-        <p>El enlace no es valido o la pagina ya no existe.</p>
-        <a href="https://meeticket.app" class="btn">Ir a meeticket.app</a>
-      </div>
+  <!-- Fallback de GitHub Pages: sirve las rutas CON parámetro (/c/<código>, /claim/<token>, /tickets/*,
+       /events/*) y el 404 genérico. app.js detecta la ruta y pinta el respaldo correcto. Las bases
+       (/c/, /claim/, /tickets, /events/) tienen su propio index.html (200) con el mismo app.js. -->
+  <div id="apex-root"></div>
+  <noscript>
+    <div style="max-width:480px;margin:40px auto;text-align:center;font-family:sans-serif;color:#d1d5db;background:#0f0f1a">
+      <strong style="color:#6c63ff">meeTicket</strong>
+      <p>Abre este enlace en tu móvil con la app meeTicket instalada. meeTicket estará disponible muy pronto en el App Store.</p>
     </div>
-  </div>
-
-  <script>
-    (function () {
-      var loading = document.getElementById('state-loading');
-      var fallback = document.getElementById('state-fallback');
-      var state404 = document.getElementById('state-404');
-      var retryLink = document.getElementById('retry-link');
-
-      function show(el) {
-        loading.classList.add('hidden');
-        fallback.classList.add('hidden');
-        state404.classList.add('hidden');
-        el.classList.remove('hidden');
-      }
-
-      // Determinar el deep link y el texto segun el path (path-based, igual que /claim)
-      var path = window.location.pathname;
-      var deepLink = null, title = '', body = '', m;
-
-      if (m = path.match(/^\/claim\/([^\/]+)\/?$/)) {
-        var token = decodeURIComponent(m[1]);
-        deepLink = 'meeticket://claim/' + encodeURIComponent(token);
-        title = 'Tienes una invitacion a un evento';
-        body = 'Abrela en meeTicket para anadirla a tu cuenta y descubrir quien mas va al evento.';
-      } else if (path.match(/^\/tickets\/?$/)) {
-        deepLink = 'meeticket://tickets';
-        title = 'Tus entradas te esperan';
-        body = 'Abrelas en la app meeTicket para ver tus entradas y el QR de acceso.';
-      } else if (m = path.match(/^\/events\/([^\/]+)\/?$/)) {
-        deepLink = 'meeticket://event/' + encodeURIComponent(decodeURIComponent(m[1]));
-        title = 'Descubre el evento';
-        body = 'Abrelo en la app meeTicket para ver los detalles y comprar entradas.';
-      } else if (m = path.match(/^\/c\/([^\/]+)\/?$/)) {
-        // Invitacion a un GRUPO (meeticket.app/c/<codigo>). Muestra el codigo + copiar + instrucciones.
-        var groupCode = decodeURIComponent(m[1]);
-        deepLink = 'meeticket://c/' + encodeURIComponent(groupCode);
-        title = 'Te han invitado a un grupo en meeTicket';
-        body = 'Abrelo en la app para unirte al grupo del evento.';
-        document.getElementById('group-code').textContent = groupCode;
-        document.getElementById('group-extra').classList.remove('hidden');
-        var copyBtn = document.getElementById('copy-code');
-        copyBtn.addEventListener('click', function () {
-          navigator.clipboard.writeText(groupCode).then(function () { copyBtn.textContent = 'Copiado'; });
-        });
-      }
-
-      if (!deepLink) {
-        show(state404);
-        return;
-      }
-
-      document.getElementById('fallback-title').textContent = title;
-      document.getElementById('fallback-body').textContent = body;
-
-      var fallbackTimer;
-      function tryOpenApp() {
-        show(loading);
-        // Si la pagina sigue visible tras 2.5s, la app no se abrio (no instalada)
-        fallbackTimer = setTimeout(function () { show(fallback); }, 2500);
-        // Si la pagina pasa a segundo plano (app abierta), cancelar el fallback
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) { clearTimeout(fallbackTimer); }
-        });
-        window.location.href = deepLink;
-      }
-
-      retryLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        tryOpenApp();
-      });
-
-      // Pequeno delay para que se vea el mensaje "Abriendo..."
-      setTimeout(tryOpenApp, 400);
-    })();
-  </script>
+  </noscript>
+  <script src="/app.js"></script>
 </body>
 </html>

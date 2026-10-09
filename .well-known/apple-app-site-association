@@ -13,7 +13,9 @@
           "/reset-password",
           "/reset-password/*",
           "/verify-email",
-          "/verify-email/*"
+          "/verify-email/*",
+          "/transfer",
+          "/transfer/*"
         ]
       }
     ]
