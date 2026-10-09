@@ -14,26 +14,6 @@
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
   function seg(prefix) { var m = p.match(new RegExp('^' + prefix + '([^/?#]+)')); return m ? decodeURIComponent(m[1]) : ''; }
 
-  var STYLE =
-    '*{margin:0;padding:0;box-sizing:border-box}' +
-    "body{background:#0f0f1a;color:#d1d5db;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh}" +
-    '.container{text-align:center;padding:40px 24px;max-width:480px}' +
-    '.logo{color:#6c63ff;font-size:28px;font-weight:800;margin-bottom:32px}' +
-    '.card{background:#1e1e2e;border-radius:16px;padding:32px 24px;border:1px solid #2d2d4e}' +
-    '.icon{font-size:48px;margin-bottom:16px}' +
-    'h2{color:#fff;font-size:20px;font-weight:700;margin-bottom:8px}' +
-    'p{font-size:15px;line-height:1.6;margin-bottom:16px;color:#9ca3af}' +
-    '.codebox{display:flex;align-items:center;justify-content:center;gap:10px;background:#0f0f1a;border:1px solid #2d2d4e;border-radius:12px;padding:14px 16px;margin:8px 0 20px}' +
-    '.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:700;color:#fff;letter-spacing:1px;word-break:break-all}' +
-    '.copy{background:#6c63ff;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer}' +
-    '.copy:hover{background:#5b54e0}' +
-    '.steps{text-align:left;margin:4px auto 20px;max-width:320px;color:#d1d5db;font-size:15px;line-height:1.9;padding-left:22px}' +
-    '.steps li{margin-bottom:2px}' +
-    '.soon{color:#a78bfa;font-weight:600;font-size:14px;margin:8px 0 0}' +
-    '.muted{color:#6b7280}' +
-    '.btn{display:inline-block;background:#6c63ff;color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:15px;margin-top:8px}' +
-    '.btn:hover{background:#5b54e0}';
-
   function download() {
     return APP_STORE_URL
       ? '<a class="btn" href="' + esc(APP_STORE_URL) + '">Descargar meeTicket</a>'
@@ -75,7 +55,6 @@
   }
 
   document.title = 'meeTicket — ' + title;
-  var style = document.createElement('style'); style.textContent = STYLE; document.head.appendChild(style);
   var root = document.getElementById('apex-root') || document.body;
   root.innerHTML = '<div class="container"><div class="logo">meeTicket</div><div class="card" data-apex-backup="1">' +
     '<div class="icon">' + view.icon + '</div><h2>' + esc(view.h) + '</h2>' + view.body + '</div></div>';

@@ -1,0 +1,109 @@
+/* Identidad visual de meeTicket para el apex — tokens EXACTOS de apps/dashboard (tailwind.config.ts +
+   globals.css). Estático puro, sin frameworks. Modo oscuro único (la tienda/panel es color-scheme: dark).
+   Dos modos de layout: body.center (tarjeta centrada: auth + handoffs) y .container.doc (documento: legales). */
+:root {
+  --bg: #0c0e14;            /* background */
+  --card: #161921;          /* card / surface */
+  --surface-hover: #1c1f2a;
+  --text: #F0F2F5;          /* foreground / text-primary */
+  --text-2: #8B8FA3;        /* text-secondary */
+  --text-3: #565B6E;        /* text-tertiary */
+  --border: rgba(255,255,255,0.08);   /* border-default */
+  --border-strong: rgba(255,255,255,0.14);
+  --primary: #6c63ff;       /* accent */
+  --primary-hover: #5a52e0;
+  --primary-active: #4f45d4;
+  --success: #5ecea0;       /* status-success */
+  --danger: #e87272;        /* status-danger */
+  --radius-card: 1.25rem;   /* ~bento */
+  --radius-ctl: 0.75rem;    /* botones/inputs */
+  --shadow-card: 0 2px 24px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.03);
+  /* wordmark meeTicket: mismo gradiente que la cabecera de la tienda */
+  --wordmark: linear-gradient(90deg, #22d3ee, #7c6cf0, #ec4899);
+  color-scheme: dark;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--text); line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body.center { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+/* Wordmark de marca (gradiente recortado al texto). Vale para <div class="logo">meeTicket</div> y .logo h1 */
+.logo, .logo h1 {
+  font-size: 28px; font-weight: 800; letter-spacing: -0.02em;
+  background: var(--wordmark); -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+.logo { margin-bottom: 32px; display: inline-block; }
+.logo p { -webkit-text-fill-color: initial; color: var(--text-3); font-size: 14px; font-weight: 400; letter-spacing: 0; background: none; margin-top: 4px; }
+
+/* Layouts */
+.container { text-align: center; padding: 40px 24px; max-width: 480px; width: 100%; }
+.container.doc { max-width: 720px; margin: 0 auto; text-align: left; padding: 40px 24px 80px; line-height: 1.7; }
+.container.doc .logo { display: block; text-align: center; }
+
+/* Cards / secciones */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 32px 24px; }
+.section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-ctl); box-shadow: var(--shadow-card); padding: 20px; margin-bottom: 16px; }
+
+/* Tipografía */
+.icon { font-size: 48px; margin-bottom: 16px; text-align: center; }
+h1 { color: var(--text); }
+h2 { color: var(--text); font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+h3 { color: #a78bfa; font-size: 16px; margin: 20px 0 8px; }
+.container.doc h2 { margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+p { font-size: 15px; line-height: 1.6; margin-bottom: 16px; color: var(--text-2); }
+.container.doc p, .container.doc li { margin-bottom: 8px; color: var(--text); }
+a { color: var(--primary); }
+ul { padding-left: 20px; }
+
+/* Botones */
+.btn { display: inline-block; background: var(--primary); color: #fff; text-decoration: none; border: none;
+  padding: 14px 28px; border-radius: var(--radius-ctl); font-weight: 700; font-size: 15px; margin-top: 12px; cursor: pointer; text-align: center; }
+.btn:hover { background: var(--primary-hover); }
+.btn:active { background: var(--primary-active); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-block { display: block; width: 100%; }
+.btn-link { display: inline-block; margin-top: 8px; }
+
+/* Formulario (reset-password) */
+label { display: block; font-size: 14px; color: var(--text-2); margin-bottom: 6px; margin-top: 16px; text-align: left; }
+.input-wrap { position: relative; }
+input[type="password"], input[type="text"] {
+  width: 100%; padding: 12px 44px 12px 14px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-ctl); color: var(--text); font-size: 15px; outline: none;
+}
+input:focus { border-color: var(--primary); }
+.toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 18px; padding: 4px; }
+.rules { list-style: none; padding: 0; margin: 16px 0 0; }
+.rules li { font-size: 13px; color: var(--text-3); padding: 3px 0 3px 20px; position: relative; }
+.rules li::before { content: ''; position: absolute; left: 0; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
+.rules li.pass { color: var(--success); }
+.rules li.pass::before { background: var(--success); }
+.form-error { color: var(--danger); font-size: 13px; margin-top: 8px; text-align: center; }
+
+/* Estados */
+.spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.success { color: var(--success); }
+.error { color: var(--danger); }
+.hidden { display: none; }
+
+/* Legales: selector de idioma + fecha */
+.lang-switch { text-align: center; margin-bottom: 32px; display: flex; gap: 8px; justify-content: center; }
+.lang-switch button { background: var(--card); border: 1px solid var(--border); color: var(--text-2); padding: 8px 20px; border-radius: var(--radius-ctl); cursor: pointer; font-size: 14px; }
+.lang-switch button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.date { color: var(--text-3); font-size: 13px; text-align: center; margin-bottom: 24px; }
+
+/* Handoffs (app.js): código + copiar + pasos + "próximamente" */
+.codebox { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-ctl); padding: 14px 16px; margin: 8px 0 20px; }
+.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: 1px; word-break: break-all; }
+.copy { background: var(--primary); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; font-weight: 700; font-size: 14px; cursor: pointer; }
+.copy:hover { background: var(--primary-hover); }
+.steps { text-align: left; margin: 4px auto 20px; max-width: 320px; color: var(--text); font-size: 15px; line-height: 1.9; padding-left: 22px; }
+.steps li { margin-bottom: 2px; }
+.soon { color: #a78bfa; font-weight: 600; font-size: 14px; margin: 8px 0 0; }
+.muted { color: var(--text-3); }
