@@ -53,7 +53,7 @@ body.center { display: flex; justify-content: center; align-items: center; min-h
 .icon { font-size: 48px; margin-bottom: 16px; text-align: center; }
 h1 { color: var(--text); }
 h2 { color: var(--text); font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-h3 { color: #a78bfa; font-size: 16px; margin: 20px 0 8px; }
+h3 { color: var(--primary); font-size: 16px; margin: 20px 0 8px; }
 .container.doc h2 { margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 p { font-size: 15px; line-height: 1.6; margin-bottom: 16px; color: var(--text-2); }
 .container.doc p, .container.doc li { margin-bottom: 8px; color: var(--text); }
@@ -68,6 +68,15 @@ ul { padding-left: 20px; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-block { display: block; width: 100%; }
 .btn-link { display: inline-block; margin-top: 8px; }
+/* Botón secundario (perfilado) — p. ej. "Ya tengo la app" en transfer/ */
+.btn-outline { display: inline-block; background: transparent; color: var(--primary); text-decoration: none;
+  border: 1px solid var(--border-strong); padding: 14px 28px; border-radius: var(--radius-ctl); font-weight: 700;
+  font-size: 15px; margin-top: 12px; cursor: pointer; text-align: center; }
+.btn-outline:hover { background: var(--surface-hover); }
+/* Nota secundaria pequeña */
+.subtle { color: var(--text-3); font-size: 13px; margin-top: 12px; }
+/* Fila de enlaces (index: legales) */
+.links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
 
 /* Formulario (reset-password) */
 label { display: block; font-size: 14px; color: var(--text-2); margin-bottom: 6px; margin-top: 16px; text-align: left; }
@@ -105,5 +114,5 @@ input:focus { border-color: var(--primary); }
 .copy:hover { background: var(--primary-hover); }
 .steps { text-align: left; margin: 4px auto 20px; max-width: 320px; color: var(--text); font-size: 15px; line-height: 1.9; padding-left: 22px; }
 .steps li { margin-bottom: 2px; }
-.soon { color: #a78bfa; font-weight: 600; font-size: 14px; margin: 8px 0 0; }
+.soon { color: var(--primary); font-weight: 600; font-size: 14px; margin: 8px 0 0; }
 .muted { color: var(--text-3); }

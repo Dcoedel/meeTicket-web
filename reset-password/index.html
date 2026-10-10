@@ -63,7 +63,7 @@
         <h2 class="success">Contraseña restablecida</h2>
         <p>Por seguridad se han cerrado todas tus sesiones. Abre meeTicket e inicia sesión con tu nueva contraseña<span id="success-email"></span>.</p>
         <a href="meeticket://login" class="btn btn-link">Abrir meeTicket</a>
-        <p style="margin-top:16px;font-size:13px;color:#6b7280;">Si el botón no abre la app, abre meeTicket manualmente e inicia sesión.</p>
+        <p style="margin-top:16px;font-size:13px;color:var(--text-3);">Si el botón no abre la app, abre meeTicket manualmente e inicia sesión.</p>
       </div>
 
       <!-- Error (token invalid / expired) -->
@@ -113,7 +113,7 @@
     function togglePw(inputId, btn) {
       var input = document.getElementById(inputId);
       if (input.type === 'password') { input.type = 'text'; btn.style.color = '#6c63ff'; }
-      else { input.type = 'password'; btn.style.color = '#6b7280'; }
+      else { input.type = 'password'; btn.style.color = 'var(--text-3)'; }
     }
 
     // Live validation

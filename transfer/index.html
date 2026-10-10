@@ -23,8 +23,7 @@
         <div class="icon">&#127915;</div>
         <h2>¡Tienes una entrada esperandote!</h2>
         <p>Alguien te ha enviado una entrada. Descarga meeTicket para aceptarla y descubrir quien mas va al evento.</p>
-        <!-- TODO: reemplazar con el App Store ID real cuando se publique -->
-        <a href="https://apps.apple.com/app/meeticket" class="btn">Descargar meeTicket gratis</a>
+        <div id="dl-slot"></div>
         <a href="#" id="retry-link" class="btn-outline">Ya tengo la app — reintentar</a>
         <p class="subtle">Tras instalar, vuelve a pulsar el enlace del email para aceptar tu entrada.</p>
       </div>
@@ -47,6 +46,13 @@
       var fallback = document.getElementById('state-fallback');
       var noToken = document.getElementById('state-no-token');
       var retryLink = document.getElementById('retry-link');
+
+      // EL DÍA DEL LANZAMIENTO: pon aquí la URL del App Store (misma constante que app.js). Vacía ("") →
+      // "Disponible muy pronto" sin botón muerto; con valor → botón "Descargar meeTicket".
+      var APP_STORE_URL = '';
+      document.getElementById('dl-slot').innerHTML = APP_STORE_URL
+        ? '<a class="btn" href="' + APP_STORE_URL.replace(/"/g, '&quot;') + '">Descargar meeTicket</a>'
+        : '<p class="soon">meeTicket estará disponible muy pronto en el App Store</p>';
 
       function show(el) {
         loading.classList.add('hidden');
