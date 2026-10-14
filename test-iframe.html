@@ -105,8 +105,8 @@
 
   <script>
     var STORE_ORIGIN = 'https://panel.meeticket.app';
-    // Evento de pago representativo por defecto (Coco, €20). Cambiable desde el input.
-    var DEFAULT_SRC = STORE_ORIGIN + '/e/cmnnur0la00eo128wfo2d7g8r';
+    // Por defecto se abre el LISTADO de eventos; ?ev=<eventId> pre-carga una ficha concreta.
+    var DEFAULT_SRC = STORE_ORIGIN + '/eventos';
     var COLORS = { view_item: 'var(--view_item)', add_to_cart: 'var(--add_to_cart)', begin_checkout: 'var(--begin_checkout)', purchase: 'var(--purchase)' };
     var ORDER = ['view_item', 'add_to_cart', 'begin_checkout', 'purchase'];
     var counts = { view_item: 0, add_to_cart: 0, begin_checkout: 0, purchase: 0 };
