@@ -84,7 +84,9 @@
   </header>
 
   <main>
-    <div class="stage"><iframe id="store" title="Tienda meeTicket"></iframe></div>
+    <!-- allow="web-share; clipboard-write": el botón "Compartir" de la entrada usa navigator.share (iOS/Android)
+         y, como plan B, copia el enlace al portapapeles. Sin estos permisos en el iframe, el navegador los bloquea. -->
+    <div class="stage"><iframe id="store" title="Tienda meeTicket" allow="web-share; clipboard-write"></iframe></div>
     <aside>
       <div class="counts" id="counts"></div>
       <div class="feed" id="feed">
