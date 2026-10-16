@@ -84,9 +84,9 @@
   </header>
 
   <main>
-    <!-- allow="web-share; clipboard-write": el botón "Compartir" de la entrada usa navigator.share (iOS/Android)
-         y, como plan B, copia el enlace al portapapeles. Sin estos permisos en el iframe, el navegador los bloquea. -->
-    <div class="stage"><iframe id="store" title="Tienda meeTicket" allow="web-share; clipboard-write"></iframe></div>
+    <!-- allow: web-share/clipboard-write → botón "Compartir" (navigator.share + copiar enlace). payment → Apple Pay
+         y Google Pay pueden invocarse DENTRO del recuadro (sin este permiso el navegador los bloquea en el iframe). -->
+    <div class="stage"><iframe id="store" title="Tienda meeTicket" allow="web-share; clipboard-write; payment"></iframe></div>
     <aside>
       <div class="counts" id="counts"></div>
       <div class="feed" id="feed">
