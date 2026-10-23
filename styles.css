@@ -2,31 +2,32 @@
    globals.css). Estático puro, sin frameworks. Modo oscuro único (la tienda/panel es color-scheme: dark).
    Dos modos de layout: body.center (tarjeta centrada: auth + handoffs) y .container.doc (documento: legales). */
 :root {
-  --bg: #0c0e14;            /* background */
-  --card: #161921;          /* card / surface */
-  --surface-hover: #1c1f2a;
-  --text: #F0F2F5;          /* foreground / text-primary */
-  --text-2: #8B8FA3;        /* text-secondary */
-  --text-3: #565B6E;        /* text-tertiary */
-  --border: rgba(255,255,255,0.08);   /* border-default */
-  --border-strong: rgba(255,255,255,0.14);
-  --primary: #6c63ff;       /* accent */
-  --primary-hover: #5a52e0;
-  --primary-active: #4f45d4;
-  --success: #5ecea0;       /* status-success */
+  --bg: #0a0a0f;            /* landing background */
+  --card: #12121b;          /* card / surface */
+  --surface-hover: #1b1b26;
+  --text: #f4f4f5;          /* foreground / text-primary */
+  --text-2: #a1a1ad;        /* text-secondary */
+  --text-3: #8a8a96;        /* text-tertiary */
+  --border: #1b1b26;        /* border-default */
+  --border-strong: #2c2c3a;
+  --primary: #8b5cf6;       /* accent (botones, h3) */
+  --primary-hover: #7c4df0;
+  --primary-active: #6d3ee0;
+  --link: #a78bfa;          /* enlaces de texto */
+  --success: #34d399;       /* status-success */
   --danger: #e87272;        /* status-danger */
   --radius-card: 1.25rem;   /* ~bento */
   --radius-ctl: 0.75rem;    /* botones/inputs */
   --shadow-card: 0 2px 24px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.03);
-  /* wordmark meeTicket: mismo gradiente que la cabecera de la tienda */
-  --wordmark: linear-gradient(90deg, #22d3ee, #7c6cf0, #ec4899);
+  /* wordmark meeTicket: mismo gradiente que la landing */
+  --wordmark: linear-gradient(95deg, #5bc3ea 0%, #8b5cf6 52%, #d0529d 100%);
   color-scheme: dark;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   background: var(--bg); color: var(--text); line-height: 1.6;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 body.center { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -57,7 +58,7 @@ h3 { color: var(--primary); font-size: 16px; margin: 20px 0 8px; }
 .container.doc h2 { margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 p { font-size: 15px; line-height: 1.6; margin-bottom: 16px; color: var(--text-2); }
 .container.doc p, .container.doc li { margin-bottom: 8px; color: var(--text); }
-a { color: var(--primary); }
+a { color: var(--link); }
 ul { padding-left: 20px; }
 
 /* Botones */
@@ -116,3 +117,25 @@ input:focus { border-color: var(--primary); }
 .steps li { margin-bottom: 2px; }
 .soon { color: var(--primary); font-weight: 600; font-size: 14px; margin: 8px 0 0; }
 .muted { color: var(--text-3); }
+
+/* Wordmark utilitario (gradiente recortado al texto) para usos inline — p. ej. el pie de los documentos */
+.wordmark {
+  background: var(--wordmark); -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  font-weight: 800; letter-spacing: -0.02em;
+}
+
+/* Caja de contacto (support) — alineada con la estética de sección */
+.contact-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-ctl); padding: 18px 20px; margin-bottom: 24px; }
+.contact-box a { font-size: 16px; font-weight: 700; }
+
+/* Pie común de las páginas de documento (privacy / terms / support): igual que la landing */
+.doc-footer {
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 14px;
+}
+.doc-footer .wordmark { font-size: 16px; }
+.doc-footer a { color: var(--text-2); }
+.doc-footer a:hover { color: var(--text); }
+.doc-copy { color: var(--text-3); margin-left: auto; }
+@media (max-width: 600px) { .doc-copy { margin-left: 0; width: 100%; } }

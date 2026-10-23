@@ -3,18 +3,422 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>meeTicket</title>
+  <title>meeTicket — La ticketera social</title>
+  <meta name="description" content="meeTicket es la ticketera social: compra tu entrada, descubre quién más va, chatea con tus meets y organiza tu grupo antes de que empiece el evento.">
   <link rel="icon" href="/favicon.png">
-  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="meeTicket — La ticketera social">
+  <meta property="og:description" content="Compra tu entrada y conoce a tu gente. La venta de entradas con una capa social encima.">
+  <meta property="og:url" content="https://meeticket.app/">
+  <meta property="og:image" content="https://meeticket.app/icon-512.png">
+
+  <!-- Inter (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#0a0a0f; --band:#0c0c13; --card:#12121b;
+      --border1:#1b1b26; --border2:#20202e; --border3:#2c2c3a;
+      --text:#f4f4f5; --muted:#a1a1ad; --muted2:#8a8a96; --link:#c7c7d1;
+      --accent:#8b5cf6; --magenta:#d0529d; --azul:#5bc3ea; --ok:#34d399;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, p { margin: 0; }
+    img, svg { display: block; }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: var(--text); }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--azul);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+    .wordmark {
+      background: linear-gradient(95deg, var(--azul) 0%, var(--accent) 52%, var(--magenta) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .icon { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── NAV ───────────────────────────────── */
+    .nav { border-bottom: 1px solid var(--border1); }
+    .nav-inner { display: flex; align-items: center; gap: 24px; padding: 20px 0; }
+    .brand { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .nav-spacer { flex: 1; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { font-weight: 500; font-size: 15px; }
+    .btn-panel {
+      color: var(--text); border: 1px solid var(--border3); border-radius: 10px;
+      padding: 9px 16px; font-weight: 600; font-size: 15px; white-space: nowrap;
+    }
+    .btn-panel:hover { border-color: var(--muted); }
+
+    /* ── HERO ──────────────────────────────── */
+    .hero-band { position: relative; width: 100%; overflow: hidden; }
+    .hero { display: flex; flex-direction: column; gap: 40px; padding: 80px 0 72px; position: relative; z-index: 1; }
+    .hero-text { display: flex; flex-direction: column; gap: 24px; min-width: 0; max-width: 760px; }
+    .badge {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border3); border-radius: 999px; padding: 6px 14px;
+      font-size: 13px; color: var(--muted); font-weight: 500;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--ok); display: inline-block; }
+    h1 { font-size: 58px; line-height: 1.06; font-weight: 800; letter-spacing: -0.03em; }
+    .lede { font-size: 19px; line-height: 1.6; color: var(--muted); max-width: 48ch; }
+    .cta-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: #fff; font-weight: 700; font-size: 16px;
+      border-radius: 12px; padding: 15px 26px;
+    }
+    .btn-primary:hover { background: #7c4df0; color: #fff; }
+    .soon {
+      border: 1px solid var(--border3); border-radius: 12px; padding: 11px 18px;
+      display: flex; align-items: center; gap: 10px; color: var(--muted);
+    }
+    .soon-label { font-size: 11px; color: var(--muted2); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+    .soon-store { font-size: 14px; font-weight: 600; color: #e5e5ea; }
+
+    /* ── VENTANA DE NAVEGADOR (tienda real embebida) ───── */
+    .browser { width: 100%; background: #0d0d15; border: 1px solid var(--border3); border-radius: 16px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,0.45); }
+    .browser-bar { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border2); position: relative; }
+    .browser-dots { display: flex; gap: 7px; }
+    .browser-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--border3); display: block; }
+    .browser-url { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--muted); pointer-events: none; }
+    .browser-view { position: relative; height: 560px; background: var(--bg); }
+    /* Fallback como CAPA BASE (z-index 0): si el iframe no carga/offline, se ve esto en vez de un blanco feo. */
+    .browser-fallback { position: absolute; inset: 0; z-index: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); text-align: center; padding: 24px; }
+    .browser-fallback .wordmark { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+    .browser-fallback a { color: var(--link); font-weight: 600; }
+    /* iframe ENCIMA (z-index 1): al cargar la tienda (fondo oscuro propio) tapa el fallback. */
+    .browser-view iframe { position: relative; z-index: 1; width: 100%; height: 100%; border: 0; display: block; }
+    /* CTA que sustituye al iframe en móvil (un iframe pesado empeora la carga; el usuario ya tiene el CTA arriba) */
+    .browser-mobile-cta { display: none; }
+
+    /* ── SECCIONES ─────────────────────────── */
+    .band { background: var(--band); border-top: 1px solid var(--border1); }
+    .section { border-top: 1px solid var(--border1); }
+    .section-pad { padding: 80px 0; }
+    .section-head { display: flex; flex-direction: column; gap: 12px; margin-bottom: 44px; }
+    h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 17px; color: var(--muted); }
+
+    .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .card { background: var(--card); border: 1px solid var(--border2); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 14px; }
+    .card .icon { color: var(--accent); width: 26px; height: 26px; }
+    .card h3 { font-size: 17px; font-weight: 700; }
+    .card p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .step { border-top: 2px solid var(--accent); padding-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .step-num { font-size: 13px; font-weight: 700; color: var(--muted2); }
+    .step h3 { font-size: 20px; font-weight: 700; }
+    .step p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+    .org { display: flex; flex-direction: column; gap: 20px; }
+    .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--ok); }
+    .org p { font-size: 17px; color: var(--muted); line-height: 1.6; max-width: 70ch; }
+    .btn-light { align-self: flex-start; background: var(--text); color: var(--bg); font-weight: 700; border-radius: 12px; padding: 14px 24px; font-size: 16px; }
+    .btn-light:hover { background: #fff; color: var(--bg); }
+    .org-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px; }
+    .bullet { background: var(--card); border: 1px solid var(--border2); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+    .bullet .icon { color: var(--ok); width: 24px; height: 24px; }
+    .bullet h3 { font-size: 16px; font-weight: 700; }
+    .bullet p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    /* ── FOOTER ────────────────────────────── */
+    .footer { border-top: 1px solid var(--border1); }
+    .footer-inner { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 32px 0; font-size: 14px; }
+    .footer .brand-sm { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; }
+    .footer a { color: var(--muted); }
+    .footer a:hover { color: var(--text); }
+    .footer-copy { color: var(--muted2); margin-left: auto; }
+
+    /* ───────────── CAPA DE ANIMACIÓN ───────────── */
+    /* 1. Blobs a TODO EL ANCHO: la capa vive en .hero-band (width:100% + overflow:hidden), NO en el
+       contenedor central; el contenido del hero va por encima (.hero tiene z-index:1). Blobs grandes y
+       repartidos para que el color llegue a los bordes del viewport en monitores anchos. */
+    .hero-blobs { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+    .blob { position: absolute; width: 680px; height: 680px; border-radius: 50%; filter: blur(80px); opacity: 0.20; will-change: transform; }
+    .blob-1 { background: radial-gradient(circle, var(--azul) 0%, transparent 70%); top: -220px; left: -180px; }
+    .blob-2 { background: radial-gradient(circle, var(--accent) 0%, transparent 70%); top: -80px; right: -200px; }
+    .blob-3 { background: radial-gradient(circle, var(--magenta) 0%, transparent 70%); bottom: -300px; left: 38%; }
+
+    /* 2. Marquee (contenido duplicado → bucle sin costura) */
+    .marquee { overflow: hidden; border-top: 1px solid var(--border1); border-bottom: 1px solid var(--border1); background: var(--band); padding: 15px 0; }
+    .marquee-track { display: flex; width: max-content; }
+    .marquee-group { display: inline-flex; align-items: center; white-space: nowrap; font-size: 14px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted2); }
+    .marquee-group span { padding: 0 22px; }
+    .marquee-group b { color: var(--accent); font-weight: 700; }
+
+    /* 5. Micro-interacciones (feedback de color/sombra; el movimiento vive en no-preference) */
+    .card, .bullet { transition: border-color .25s ease, box-shadow .25s ease; }
+    .card:hover, .bullet:hover { border-color: var(--accent); box-shadow: 0 12px 30px rgba(139,92,246,0.13); }
+    .btn-primary, .btn-light, .btn-panel { transition: background .25s ease, filter .25s ease, border-color .25s ease; }
+    .btn-primary:hover, .btn-light:hover { filter: brightness(1.06); }
+
+    /* 6. Manifiesto */
+    .manifesto { font-size: 52px; line-height: 1.1; }
+
+    /* Toda la MOTION envuelta: con reduced-motion no hay blobs animados, ni marquee en movimiento,
+       ni reveal (todo visible), ni flotación ni hover con desplazamiento. */
+    @media (prefers-reduced-motion: no-preference) {
+      .blob-1 { animation: blob1 24s ease-in-out infinite; }
+      .blob-2 { animation: blob2 28s ease-in-out infinite; }
+      .blob-3 { animation: blob3 32s ease-in-out infinite; }
+      .marquee-track { animation: marquee 32s linear infinite; }
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease-out, transform .6s ease-out; }
+      .reveal.visible { opacity: 1; transform: none; }
+      .card, .bullet { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+      .card:hover, .bullet:hover { transform: translateY(-4px); }
+      .btn-primary, .btn-light { transition: transform .25s ease, background .25s ease, filter .25s ease; }
+      .btn-primary:hover, .btn-light:hover { transform: scale(1.02); }
+    }
+    @keyframes blob1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(60px,40px) scale(1.15); } }
+    @keyframes blob2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,30px) scale(1.12); } }
+    @keyframes blob3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-50px) scale(1.2); } }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @media (max-width: 900px) { .manifesto { font-size: 40px; } }
+    @media (max-width: 600px) { .manifesto { font-size: 30px; } }
+
+    /* ── RESPONSIVE ────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { padding: 64px 0 56px; }
+      h1 { font-size: 48px; }
+      .browser-view { height: 480px; }
+      .social-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: 1fr; gap: 28px; }
+      .org-grid { grid-template-columns: 1fr; }
+    }
+    /* ≤700px: fuera el iframe (pesado en móvil) → enlace-tarjeta "Explorar eventos →" */
+    @media (max-width: 700px) {
+      .browser-view { display: none; }
+      .browser-mobile-cta {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        padding: 22px; font-weight: 700; color: var(--text); font-size: 16px;
+      }
+    }
+    @media (max-width: 600px) {
+      .wrap { padding: 0 20px; }
+      .nav-links { display: none; }
+      h1 { font-size: 36px; }
+      h2 { font-size: 28px; }
+      .lede { font-size: 17px; }
+      .section-pad { padding: 56px 0; }
+      .social-grid { grid-template-columns: 1fr; }
+      .footer-copy { margin-left: 0; width: 100%; }
+    }
+  </style>
 </head>
-<body class="center">
-  <div class="container">
-    <h1>meeTicket</h1>
-    <p>La ticketera social — compra entradas y conoce gente en tus eventos</p>
-    <div class="links">
-      <a href="/privacy">Politica de Privacidad</a>
-      <a href="/terms">Terminos de Uso</a>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand"><span class="wordmark">meeTicket</span></div>
+      <span class="nav-spacer"></span>
+      <div class="nav-links">
+        <a href="#eventos">Eventos</a>
+        <a href="#social">La capa social</a>
+        <a href="#organizadores">Organizadores</a>
+      </div>
+      <a class="btn-panel" href="https://panel.meeticket.app/login">Acceder al panel</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-band">
+    <!-- Blobs a todo el ancho del viewport (fuera del contenedor central) -->
+    <div class="hero-blobs" aria-hidden="true">
+      <span class="blob blob-1"></span>
+      <span class="blob blob-2"></span>
+      <span class="blob blob-3"></span>
+    </div>
+    <header class="wrap hero">
+    <div class="hero-text">
+      <span class="badge"><span class="dot"></span> La ticketera social</span>
+      <h1>Compra tu entrada.<br>Conoce a tu gente.</h1>
+      <p class="lede">meeTicket une la venta de entradas con una capa social: mira quién más va, chatea con tus meets y organiza tu grupo antes de que empiece el evento.</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="https://panel.meeticket.app/eventos">Explorar eventos</a>
+        <div class="soon">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+          <div>
+            <span class="soon-label">Muy pronto en</span><br>
+            <span class="soon-store">App Store · Google Play</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ventana de navegador: la tienda REAL embebida -->
+    <div class="browser reveal">
+      <div class="browser-bar">
+        <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="browser-url">meeticket.app</span>
+      </div>
+      <div class="browser-view">
+        <!-- Capa base (se ve si el iframe no carga / offline) -->
+        <a class="browser-fallback" href="https://panel.meeticket.app/eventos">
+          <span class="wordmark">meeTicket</span>
+          <span>Abrir la tienda →</span>
+        </a>
+        <!-- Tienda real (tapa el fallback al cargar). Embebible: frame-ancestors incluye meeticket.app -->
+        <iframe src="https://panel.meeticket.app/eventos" loading="lazy" title="Tienda de eventos de meeTicket"></iframe>
+      </div>
+      <!-- Solo ≤700px: en vez del iframe, un enlace-tarjeta -->
+      <a class="browser-mobile-cta" href="https://panel.meeticket.app/eventos">Explorar eventos →</a>
+    </div>
+    </header>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-group"><span>Mira quién va</span><b>✦</b><span>Chatea con tus meets</span><b>✦</b><span>Id juntos</span><b>✦</b><span>Entérate antes</span><b>✦</b><span>Vive el evento</span><b>✦</b></div>
+      <div class="marquee-group"><span>Mira quién va</span><b>✦</b><span>Chatea con tus meets</span><b>✦</b><span>Id juntos</span><b>✦</b><span>Entérate antes</span><b>✦</b><span>Vive el evento</span><b>✦</b></div>
     </div>
   </div>
+
+  <!-- CAPA SOCIAL -->
+  <section class="band" id="social">
+    <div class="wrap section-pad">
+      <div class="section-head reveal">
+        <h2 class="manifesto">Una entrada aquí es <span class="wordmark">más que una entrada</span></h2>
+        <p class="section-sub">Todo lo que pasa alrededor del evento, antes del evento.</p>
+      </div>
+      <div class="social-grid">
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <h3>Mira quién más va</h3>
+          <p>Descubre a los asistentes de tu evento y conecta antes de que empiece.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <h3>Chatea con tus meets</h3>
+          <p>Comparte tu ubicación y habla con la gente que has conocido en cada evento.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <h3>Id juntos</h3>
+          <p>Crea o únete a un grupo para ir en cuadrilla y no perderos por el camino.</p>
+        </article>
+        <article class="card reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <h3>Entérate antes</h3>
+          <p>Recibe aviso de los próximos eventos antes de que vuelen las entradas.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASÍ FUNCIONA -->
+  <section class="section" id="eventos">
+    <div class="wrap section-pad">
+      <div class="section-head reveal">
+        <h2>Así funciona</h2>
+      </div>
+      <div class="how-grid">
+        <div class="step reveal">
+          <span class="step-num">01</span>
+          <h3>Compra tu entrada</h3>
+          <p>En la web o en la app, con tu zona elegida y el QR siempre a mano. Los eventos gratuitos, con un toque: «Asistiré».</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">02</span>
+          <h3>Descubre quién va</h3>
+          <p>Tu entrada desbloquea la capa social del evento: asistentes, saludos, chats y grupos.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">03</span>
+          <h3>Vive el evento</h3>
+          <p>Cómo llegar a tu zona, tu grupo en el mapa y tu gente nueva a un mensaje de distancia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORGANIZADORES -->
+  <section class="band" id="organizadores">
+    <div class="wrap section-pad">
+      <div class="org reveal">
+        <span class="eyebrow">PARA ORGANIZADORES</span>
+        <h2>Tu evento, vendido y medido</h2>
+        <p>Venta online y en taquilla, control de accesos con QR y un panel con tus ventas y asistentes en tiempo real. Sin cuotas fijas: solo una comisión por entrada vendida.</p>
+        <a class="btn-light" href="https://panel.meeticket.app/login">Acceder al panel</a>
+      </div>
+      <div class="org-grid">
+        <article class="bullet reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <h3>Ventas en tiempo real</h3>
+          <p>Gráficas por día y por zona, aforos y exportables.</p>
+        </article>
+        <article class="bullet reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+          <h3>Accesos con QR</h3>
+          <p>Escáner en el móvil, asistentes en directo y taquilla integrada.</p>
+        </article>
+        <article class="bullet reveal">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg>
+          <h3>Sala de espera</h3>
+          <p>Aperturas a hora fija sin caídas: cola justa y ordenada.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span class="brand-sm wordmark">meeTicket</span>
+      <a href="/privacy">Política de Privacidad</a>
+      <a href="/terms">Términos de Uso</a>
+      <span class="footer-copy">© 2026 meeTicket</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // Scroll reveal con escalonado 80ms entre tarjetas hermanas; una sola vez (unobserve).
+      // (El respeto a reduced-motion lo da el CSS: sin la media query, .reveal no oculta nada.)
+      var reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        reveals.forEach(function (el) {
+          var sibs = Array.prototype.filter.call(el.parentElement.children, function (c) {
+            return c.classList.contains('reveal');
+          });
+          var i = sibs.indexOf(el);
+          if (i > 0) el.style.transitionDelay = (i * 80) + 'ms';
+        });
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.15 });
+        reveals.forEach(function (el) { io.observe(el); });
+      } else {
+        reveals.forEach(function (el) { el.classList.add('visible'); });
+      }
+    })();
+  </script>
+
 </body>
 </html>
