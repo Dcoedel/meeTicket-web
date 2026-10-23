@@ -97,21 +97,15 @@
     .soon-label { font-size: 11px; color: var(--muted2); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
     .soon-store { font-size: 14px; font-weight: 600; color: #e5e5ea; }
 
-    /* ── VENTANA DE NAVEGADOR (tienda real embebida) ───── */
-    .browser { width: 100%; background: #0d0d15; border: 1px solid var(--border3); border-radius: 16px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,0.45); }
-    .browser-bar { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border2); position: relative; }
-    .browser-dots { display: flex; gap: 7px; }
-    .browser-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--border3); display: block; }
-    .browser-url { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--muted); pointer-events: none; }
-    .browser-view { position: relative; height: 560px; background: var(--bg); }
-    /* Fallback como CAPA BASE (z-index 0): si el iframe no carga/offline, se ve esto en vez de un blanco feo. */
-    .browser-fallback { position: absolute; inset: 0; z-index: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); text-align: center; padding: 24px; }
-    .browser-fallback .wordmark { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
-    .browser-fallback a { color: var(--link); font-weight: 600; }
-    /* iframe ENCIMA (z-index 1): al cargar la tienda (fondo oscuro propio) tapa el fallback. */
-    .browser-view iframe { position: relative; z-index: 1; width: 100%; height: 100%; border: 0; display: block; }
-    /* CTA que sustituye al iframe en móvil (un iframe pesado empeora la carga; el usuario ya tiene el CTA arriba) */
-    .browser-mobile-cta { display: none; }
+    /* ── TIENDA EMBEBIDA (sección nativa, sin marco de navegador) ───── */
+    /* Borde 1px muy sutil (los fondos tienda/landing no son idénticos: #0c0e14 vs #0a0a0f) + radius, sin sombra. */
+    .store-embed { position: relative; height: 620px; border: 1px solid var(--border1); border-radius: 18px; overflow: hidden; background: var(--bg); }
+    /* Fallback como CAPA BASE (z-index 0): se ve si el iframe no carga/offline, y es la tarjeta-enlace en móvil. */
+    .store-embed-fallback { position: absolute; inset: 0; z-index: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); text-align: center; padding: 28px; }
+    .store-embed-fallback .wordmark { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+    .store-embed-fallback a { color: var(--link); font-weight: 600; }
+    /* iframe ENCIMA (z-index 1): al cargar la tienda tapa el fallback. */
+    .store-embed iframe { position: relative; z-index: 1; width: 100%; height: 100%; border: 0; display: block; }
 
     /* ── SECCIONES ─────────────────────────── */
     .band { background: var(--band); border-top: 1px solid var(--border1); }
@@ -203,18 +197,17 @@
     @media (max-width: 900px) {
       .hero { padding: 64px 0 56px; }
       h1 { font-size: 48px; }
-      .browser-view { height: 480px; }
+      .store-embed { height: 520px; }
       .social-grid { grid-template-columns: repeat(2, 1fr); }
       .how-grid { grid-template-columns: 1fr; gap: 28px; }
       .org-grid { grid-template-columns: 1fr; }
     }
     /* ≤700px: fuera el iframe (pesado en móvil) → enlace-tarjeta "Explorar eventos →" */
+    /* ≤700px: fuera el iframe (pesado en móvil) → la tarjeta-enlace (el fallback, ahora en flujo) */
     @media (max-width: 700px) {
-      .browser-view { display: none; }
-      .browser-mobile-cta {
-        display: flex; align-items: center; justify-content: center; gap: 8px;
-        padding: 22px; font-weight: 700; color: var(--text); font-size: 16px;
-      }
+      .store-embed { height: auto; }
+      .store-embed iframe { display: none; }
+      .store-embed-fallback { position: static; }
     }
     @media (max-width: 600px) {
       .wrap { padding: 0 20px; }
@@ -268,25 +261,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Ventana de navegador: la tienda REAL embebida -->
-    <div class="browser reveal">
-      <div class="browser-bar">
-        <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="browser-url">meeticket.app</span>
-      </div>
-      <div class="browser-view">
-        <!-- Capa base (se ve si el iframe no carga / offline) -->
-        <a class="browser-fallback" href="https://panel.meeticket.app/eventos">
-          <span class="wordmark">meeTicket</span>
-          <span>Abrir la tienda →</span>
-        </a>
-        <!-- Tienda real (tapa el fallback al cargar). Embebible: frame-ancestors incluye meeticket.app -->
-        <iframe src="https://panel.meeticket.app/eventos" loading="lazy" title="Tienda de eventos de meeTicket"></iframe>
-      </div>
-      <!-- Solo ≤700px: en vez del iframe, un enlace-tarjeta -->
-      <a class="browser-mobile-cta" href="https://panel.meeticket.app/eventos">Explorar eventos →</a>
-    </div>
     </header>
   </section>
 
@@ -297,6 +271,25 @@
       <div class="marquee-group"><span>Mira quién va</span><b>✦</b><span>Chatea con tus meets</span><b>✦</b><span>Id juntos</span><b>✦</b><span>Entérate antes</span><b>✦</b><span>Vive el evento</span><b>✦</b></div>
     </div>
   </div>
+
+  <!-- PRÓXIMOS EVENTOS (la tienda real, embebida como sección nativa) -->
+  <section class="section" id="tienda">
+    <div class="wrap section-pad">
+      <div class="section-head reveal">
+        <h2>Próximos eventos</h2>
+        <p class="section-sub">La tienda, en vivo — esto es meeTicket funcionando hoy.</p>
+      </div>
+      <div class="store-embed reveal">
+        <!-- Capa base (se ve si el iframe no carga/offline; y es la tarjeta-enlace en ≤700px) -->
+        <a class="store-embed-fallback" href="https://panel.meeticket.app/eventos">
+          <span class="wordmark">meeTicket</span>
+          <span>Abrir la tienda →</span>
+        </a>
+        <!-- Tienda real en modo embed (?embed=1 oculta su cabecera/pie). Embebible: frame-ancestors incluye meeticket.app -->
+        <iframe src="https://panel.meeticket.app/eventos?embed=1" loading="lazy" title="Tienda de eventos de meeTicket"></iframe>
+      </div>
+    </div>
+  </section>
 
   <!-- CAPA SOCIAL -->
   <section class="band" id="social">
