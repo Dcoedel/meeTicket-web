@@ -34,7 +34,7 @@
     a { color: var(--link); text-decoration: none; }
     a:hover { color: var(--text); }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; border-radius: 6px; }
-    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
     .wordmark { background: linear-gradient(95deg, var(--azul) 0%, var(--accent) 52%, var(--magenta) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .icon { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -74,7 +74,7 @@
     /* Legibilidad PRINCIPAL desde abajo; apoyo lateral izquierdo suave (máx 0.45, muere antes del 50%). */
     .slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6,5,12,0.92) 0%, rgba(6,5,12,0.35) 40%, transparent 65%), linear-gradient(90deg, rgba(6,5,12,0.45) 0%, transparent 48%); }
     .slide-inner { position: absolute; inset: 0; z-index: 1; display: flex; align-items: flex-end; }
-    .slide-content { max-width: 1240px; margin: 0 auto; padding: 0 32px 64px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
+    .slide-content { max-width: 1400px; margin: 0 auto; padding: 0 32px 64px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
     .slide-badge { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; color: var(--azul); border: 1px solid rgba(91,195,234,0.4); border-radius: 999px; padding: 5px 12px; }
     .slide-meta { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
     .slide-title { font-size: 72px; line-height: 1.02; font-weight: 900; letter-spacing: -0.03em; max-width: 16ch; text-shadow: 0 2px 18px rgba(0,0,0,0.45); }
@@ -106,6 +106,8 @@
     .chip:hover { border-color: var(--muted); color: var(--text); }
     .chip.active { border-color: var(--accent); background: #1b1430; color: #d6c9f5; }
     .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: stretch; }
+    /* Viewports muy anchos: 5 columnas para que las tarjetas no se hinchen (ancho de .grid intacto → no afecta a la alineación). */
+    @media (min-width: 1700px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     .ev-card { background: var(--card); border: 1px solid var(--border2); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; color: var(--text); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
     .ev-card:hover { color: var(--text); }
     .ev-cover { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #15151f; }
