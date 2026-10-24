@@ -27,23 +27,8 @@
       --accent:#8b5cf6; --magenta:#d0529d; --azul:#5bc3ea; --ok:#34d399; --fecha:#b8a6e8;
     }
     *, *::before, *::after { box-sizing: border-box; }
-    /* Color base en el canvas (html); body transparente para que la capa aurora (z-index:-1) se vea tras el contenido. */
-    html { -webkit-text-size-adjust: 100%; background: var(--bg); }
-    body { margin: 0; background: transparent; color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
-
-    /* ── FONDO AURORA (toda la web, bajo el contenido; el hero opaco lo tapa en su zona) ── */
-    .page-aurora { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-    .page-aurora .pb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.2; will-change: transform; }
-    /* Grano SVG (feTurbulence) encima del aurora para romper el banding de los degradados oscuros (dithering). */
-    .page-aurora::after { content: ""; position: absolute; inset: 0; opacity: 0.035; mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 140px 140px; }
-    .pb1 { width: 560px; height: 560px; background: radial-gradient(circle, var(--azul) 0%, transparent 70%); top: 6%; left: -6%; }
-    .pb2 { width: 620px; height: 620px; background: radial-gradient(circle, var(--magenta) 0%, transparent 70%); top: 0%; right: -8%; }
-    .pb3 { width: 600px; height: 600px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); top: 40%; left: 28%; }
-    .pb4 { width: 520px; height: 520px; background: radial-gradient(circle, var(--azul) 0%, transparent 70%); bottom: 4%; left: -5%; }
-    .pb5 { width: 580px; height: 580px; background: radial-gradient(circle, var(--magenta) 0%, transparent 70%); bottom: -6%; right: 3%; }
-    .pb6 { width: 540px; height: 540px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); top: 60%; right: 24%; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
     h1, h2, h3, p { margin: 0; }
     img, svg { display: block; }
     a { color: var(--link); text-decoration: none; }
@@ -55,14 +40,19 @@
 
     /* ── NAV ── */
     .nav { border-bottom: 1px solid var(--border1); position: sticky; top: 0; z-index: 40; background: rgba(10,10,15,0.85); backdrop-filter: blur(10px); }
-    .nav-inner { display: flex; align-items: center; gap: 20px; padding: 14px 0; }
-    /* 3 zonas: [izquierda fija][buscador][…Eventos a la derecha]. El wordmark grande se centra SOLO dentro de
-       su zona izquierda (flex-basis fijo + text-align:center), sin empujar el buscador. line-height:1 = barra compacta. */
-    .brand { flex: 0 0 240px; text-align: center; font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+    /* Longhand: no pisa el 'padding: 0 32px' del .wrap → el nav comparte el borde del contenido con las secciones
+       (Eventos alinea con el borde derecho de la parrilla). */
+    .nav-inner { display: flex; align-items: center; padding-top: 14px; padding-bottom: 14px; }
+    /* La zona izquierda se extiende EXACTAMENTE hasta el buscador (flex:1, sin gap entre medias) y centra el
+       wordmark geométricamente dentro (justify-content:center) → distancias izq/dcha iguales. nav-spacer (mismo
+       flex:1) empuja "Eventos" al borde derecho del contenedor. line-height:1 = barra compacta. */
+    .nav-left { flex: 1 1 0; display: flex; justify-content: center; min-width: 0; }
+    .nav-spacer { flex: 1 1 0; }
+    .brand { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
     .nav-search { flex: 0 1 420px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border3); border-radius: 999px; padding: 9px 16px; color: var(--muted2); font-size: 14px; }
     .nav-search:hover { border-color: var(--muted); color: var(--muted); }
     .nav-search .icon { width: 17px; height: 17px; }
-    .nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
     .nav-links a { font-weight: 500; font-size: 15px; }
     .btn-panel { color: var(--text); border: 1px solid var(--border3); border-radius: 10px; padding: 9px 16px; font-weight: 600; font-size: 15px; white-space: nowrap; transition: background .25s ease, border-color .25s ease; }
     .btn-panel:hover { border-color: var(--muted); }
@@ -136,15 +126,14 @@
     .sk-line { height: 12px; border-radius: 6px; background: #1c1c28; }
 
     /* ── MARQUEE ── */
-    .marquee { overflow: hidden; border-top: 1px solid var(--border1); border-bottom: 1px solid var(--border1); background: rgba(12,12,19,0.58); padding: 15px 0; }
+    .marquee { overflow: hidden; border-top: 1px solid var(--border1); border-bottom: 1px solid var(--border1); background: var(--band); padding: 15px 0; }
     .marquee-track { display: flex; width: max-content; will-change: transform; }
     .marquee-group { display: inline-flex; align-items: center; white-space: nowrap; font-size: 14px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted2); }
     .marquee-group span { padding: 0 22px; }
     .marquee-group b { color: var(--accent); font-weight: 700; }
 
     /* ── CAPA SOCIAL compacta ── */
-    /* Semitransparente para que el aurora se aprecie tras las bandas; las tarjetas #12121b quedan opacas. */
-    .band { background: rgba(12,12,19,0.58); border-top: 1px solid var(--border1); }
+    .band { background: var(--band); border-top: 1px solid var(--border1); }
     .social2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
     .kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; }
     .kicker.azul { color: var(--azul); }
@@ -184,13 +173,6 @@
       html { scroll-behavior: smooth; }
       /* Fallback lento (~90s con este texto); el JS ajusta a ~40px/s según el ancho real. */
       .marquee-track { animation: marquee 90s linear infinite; }
-      /* Aurora: movimiento MUY lento y desfasado */
-      .pb1 { animation: pbfloat1 28s ease-in-out infinite; }
-      .pb2 { animation: pbfloat2 32s ease-in-out infinite; }
-      .pb3 { animation: pbfloat3 26s ease-in-out infinite; }
-      .pb4 { animation: pbfloat1 34s ease-in-out infinite reverse; }
-      .pb5 { animation: pbfloat2 30s ease-in-out infinite; }
-      .pb6 { animation: pbfloat3 36s ease-in-out infinite reverse; }
       .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease-out, transform .6s ease-out; }
       .reveal.visible { opacity: 1; transform: none; }
       .ev-card:hover, .mini-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(139,92,246,0.13); }
@@ -201,9 +183,6 @@
     .ev-card:hover, .mini-card:hover { border-color: var(--accent); }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @keyframes shimmer { to { transform: translateX(100%); } }
-    @keyframes pbfloat1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px,30px); } }
-    @keyframes pbfloat2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,25px); } }
-    @keyframes pbfloat3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,-40px); } }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
@@ -213,6 +192,7 @@
     }
     @media (max-width: 700px) {
       .nav-search { display: none; }
+      .nav-spacer { display: none; }
       .cartelera { height: 420px; }
       .slide-title { font-size: 40px; }
       .slide-content { padding: 0 20px 52px; }
@@ -233,24 +213,15 @@
 </head>
 <body>
 
-  <!-- FONDO AURORA de toda la web (fijo, bajo el contenido; el hero opaco lo tapa en su zona) -->
-  <div class="page-aurora" aria-hidden="true">
-    <span class="pb pb1"></span>
-    <span class="pb pb2"></span>
-    <span class="pb pb3"></span>
-    <span class="pb pb4"></span>
-    <span class="pb pb5"></span>
-    <span class="pb pb6"></span>
-  </div>
-
   <!-- NAV -->
   <nav class="nav">
     <div class="wrap nav-inner">
-      <div class="brand"><span class="wordmark">meeTicket</span></div>
+      <div class="nav-left"><span class="brand wordmark">meeTicket</span></div>
       <a class="nav-search" href="https://panel.meeticket.app/eventos">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         Busca evento o lugar…
       </a>
+      <span class="nav-spacer" aria-hidden="true"></span>
       <div class="nav-links">
         <a href="#eventos">Eventos</a>
       </div>
