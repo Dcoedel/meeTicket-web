@@ -46,7 +46,7 @@
     /* La zona izquierda se extiende EXACTAMENTE hasta el buscador (flex:1, sin gap entre medias) y centra el
        wordmark geométricamente dentro (justify-content:center) → distancias izq/dcha iguales. nav-spacer (mismo
        flex:1) empuja "Eventos" al borde derecho del contenedor. line-height:1 = barra compacta. */
-    .nav-left { flex: 1 1 0; display: flex; justify-content: center; min-width: 0; }
+    .nav-left { flex: 1 1 0; display: flex; justify-content: flex-start; min-width: 0; }
     .nav-spacer { flex: 1 1 0; }
     .brand { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
     .nav-search { flex: 0 1 420px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border3); border-radius: 999px; padding: 9px 16px; color: var(--muted2); font-size: 14px; }
