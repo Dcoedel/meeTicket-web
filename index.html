@@ -42,10 +42,10 @@
     .nav { border-bottom: 1px solid var(--border1); position: sticky; top: 0; z-index: 40; background: rgba(10,10,15,0.85); backdrop-filter: blur(10px); }
     .nav-inner { display: flex; align-items: center; gap: 20px; padding: 16px 0; }
     .brand { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-    .nav-search { flex: 1 1 auto; max-width: 420px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border3); border-radius: 999px; padding: 9px 16px; color: var(--muted2); font-size: 14px; }
+    .nav-search { flex: 0 1 420px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border3); border-radius: 999px; padding: 9px 16px; color: var(--muted2); font-size: 14px; }
     .nav-search:hover { border-color: var(--muted); color: var(--muted); }
     .nav-search .icon { width: 17px; height: 17px; }
-    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
     .nav-links a { font-weight: 500; font-size: 15px; }
     .btn-panel { color: var(--text); border: 1px solid var(--border3); border-radius: 10px; padding: 9px 16px; font-weight: 600; font-size: 15px; white-space: nowrap; transition: background .25s ease, border-color .25s ease; }
     .btn-panel:hover { border-color: var(--muted); }
@@ -64,12 +64,14 @@
     .carousel[hidden] { display: none; }
     .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; pointer-events: none; background-size: cover; background-position: center; }
     .slide.active { opacity: 1; pointer-events: auto; }
-    .slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.55) 42%, transparent 72%), linear-gradient(to top, rgba(10,10,15,0.9) 0%, transparent 55%); }
+    /* Legibilidad PRINCIPAL desde abajo; apoyo lateral izquierdo suave (máx 0.45, muere antes del 50%). */
+    .slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6,5,12,0.92) 0%, rgba(6,5,12,0.35) 40%, transparent 65%), linear-gradient(90deg, rgba(6,5,12,0.45) 0%, transparent 48%); }
     .slide-inner { position: absolute; inset: 0; z-index: 1; display: flex; align-items: flex-end; }
     .slide-content { max-width: 1160px; margin: 0 auto; padding: 0 32px 64px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
     .slide-badge { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; color: var(--azul); border: 1px solid rgba(91,195,234,0.4); border-radius: 999px; padding: 5px 12px; }
     .slide-meta { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
-    .slide-title { font-size: 72px; line-height: 1.02; font-weight: 900; letter-spacing: -0.03em; max-width: 16ch; }
+    .slide-title { font-size: 72px; line-height: 1.02; font-weight: 900; letter-spacing: -0.03em; max-width: 16ch; text-shadow: 0 2px 18px rgba(0,0,0,0.45); }
+    .slide-meta { text-shadow: 0 1px 10px rgba(0,0,0,0.45); }
     .slide-cta { align-self: flex-start; margin-top: 6px; }
     .slide-cta.free { background: var(--ok); color: #05261a; }
     .slide-cta.free:hover { background: #2fbd89; color: #05261a; }
@@ -84,6 +86,9 @@
     /* ── PRÓXIMOS EVENTOS ── */
     .section { border-top: 1px solid var(--border1); }
     .section-pad { padding: 72px 0; }
+    /* Título visible bajo el nav sticky al aterrizar en un ancla */
+    #eventos, #social, #organizadores { scroll-margin-top: 84px; }
+    #organizadores .section-pad { padding: 104px 0; }
     .section-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
     h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; }
     .section-sub { font-size: 17px; color: var(--muted); }
@@ -91,15 +96,15 @@
     .chip { border: 1px solid var(--border3); background: transparent; color: var(--muted); border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: border-color .2s, color .2s, background .2s; }
     .chip:hover { border-color: var(--muted); color: var(--text); }
     .chip.active { border-color: var(--accent); background: #1b1430; color: #d6c9f5; }
-    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: stretch; }
     .ev-card { background: var(--card); border: 1px solid var(--border2); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; color: var(--text); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
     .ev-card:hover { color: var(--text); }
     .ev-cover { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #15151f; }
-    .ev-body { padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .ev-body { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; }
     .ev-date { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--fecha); text-transform: uppercase; }
-    .ev-title { font-size: 17px; font-weight: 700; line-height: 1.25; }
-    .ev-venue { font-size: 13px; color: var(--muted); }
-    .ev-price { font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px; }
+    .ev-title { font-size: 17px; font-weight: 700; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ev-venue { font-size: 13px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ev-price { font-size: 14px; font-weight: 700; color: var(--accent); margin-top: auto; padding-top: 10px; }
     .ev-price.free { color: var(--ok); }
     .ver-todos { display: flex; justify-content: center; margin-top: 40px; }
     .ver-todos a { color: var(--link); font-weight: 600; border: 1px solid var(--border3); border-radius: 12px; padding: 13px 24px; transition: border-color .25s, color .25s; }
@@ -154,6 +159,7 @@
 
     /* ── MOTION (todo bajo prefers-reduced-motion: no-preference) ── */
     @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
       .marquee-track { animation: marquee 32s linear infinite; }
       .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease-out, transform .6s ease-out; }
       .reveal.visible { opacity: 1; transform: none; }
@@ -205,7 +211,6 @@
         <a href="#eventos">Eventos</a>
         <a href="#organizadores">Organizadores</a>
       </div>
-      <a class="btn-panel" href="https://panel.meeticket.app/login">Acceder al panel</a>
     </div>
   </nav>
 
@@ -246,8 +251,8 @@
   <!-- MARQUEE -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <div class="marquee-group"><span>Mira quién va</span><b>✦</b><span>Chatea con tus meets</span><b>✦</b><span>Id juntos</span><b>✦</b><span>Entérate antes</span><b>✦</b><span>Vive el evento</span><b>✦</b></div>
-      <div class="marquee-group"><span>Mira quién va</span><b>✦</b><span>Chatea con tus meets</span><b>✦</b><span>Id juntos</span><b>✦</b><span>Entérate antes</span><b>✦</b><span>Vive el evento</span><b>✦</b></div>
+      <div class="marquee-group"><span>Mira quién más va al evento</span><b>✦</b><span>Saluda a los demás asistentes en Conectar y habla con tus meets</span><b>✦</b><span>Crea un grupo o únete a él y organiza tu plan</span><b>✦</b><span>Activa tus notificaciones para ser de los primeros en saber tus próximos eventos</span><b>✦</b><span>Tu entrada o tu confirmación de asistencia es la llave de la capa social</span><b>✦</b><span>Únete a la lista de espera si se agotan las entradas</span><b>✦</b></div>
+      <div class="marquee-group"><span>Mira quién más va al evento</span><b>✦</b><span>Saluda a los demás asistentes en Conectar y habla con tus meets</span><b>✦</b><span>Crea un grupo o únete a él y organiza tu plan</span><b>✦</b><span>Activa tus notificaciones para ser de los primeros en saber tus próximos eventos</span><b>✦</b><span>Tu entrada o tu confirmación de asistencia es la llave de la capa social</span><b>✦</b><span>Únete a la lista de espera si se agotan las entradas</span><b>✦</b></div>
     </div>
   </div>
 
@@ -287,8 +292,8 @@
     </div>
   </section>
 
-  <!-- ORGANIZADORES (compacto) -->
-  <section class="section" id="organizadores">
+  <!-- ORGANIZADORES (compacto, banda con presencia) -->
+  <section class="band" id="organizadores">
     <div class="wrap section-pad">
       <div class="org2 reveal">
         <span class="kicker verde">PARA ORGANIZADORES</span>
@@ -308,6 +313,7 @@
       <span class="brand-sm wordmark">meeTicket</span>
       <a href="/privacy">Política de Privacidad</a>
       <a href="/terms">Términos de Uso</a>
+      <a href="https://panel.meeticket.app/login">Panel de organizadores</a>
       <span class="footer-copy">© 2026 meeTicket</span>
     </div>
   </footer>
