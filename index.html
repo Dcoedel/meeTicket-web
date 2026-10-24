@@ -441,7 +441,10 @@
           var slide = document.createElement('div');
           slide.className = 'slide' + (i === 0 ? ' active' : '');
           var cover = ev.coverImageUrl || ev.thumbnailUrl;
-          if (cover) slide.style.backgroundImage = 'url("' + cover.replace(/"/g, '%22') + '")';
+          if (cover) {
+            slide.style.backgroundImage = 'url("' + cover.replace(/"/g, '%22') + '")';
+            var pre = new Image(); pre.src = cover;   // precarga explícita → la 1ª vuelta entra sin salto
+          }
           slide.setAttribute('role', 'group');
           slide.setAttribute('aria-label', ev.title || 'Evento');
 
@@ -480,15 +483,22 @@
         function go(i, user) { idx = (i + n) % n; render(); if (user) restart(); }
         function next() { go(idx + 1); }
         function prev() { go(idx - 1); }
-        function start() { if (!reduce && n > 1) timer = setInterval(next, 6000); }
+        // Guardia: nunca dos intervalos vivos a la vez → evita el avance errático por doble setInterval.
+        function start() { if (timer || reduce || n <= 1) return; timer = setInterval(next, 6000); }
         function stop() { if (timer) { clearInterval(timer); timer = null; } }
         function restart() { stop(); start(); }
 
         el('carNext').addEventListener('click', function () { next(); restart(); });
         el('carPrev').addEventListener('click', function () { prev(); restart(); });
-        var hero = el('hero');
-        hero.addEventListener('mouseenter', stop);
-        hero.addEventListener('mouseleave', start);
+        // Pausa al pasar el ratón SOLO por los controles (flechas + puntos), no por toda la foto:
+        // un roce sobre la imagen ya no alarga el slide.
+        [el('carPrev'), el('carNext'), dotsWrap].forEach(function (c) {
+          c.addEventListener('mouseenter', stop);
+          c.addEventListener('mouseleave', start);
+        });
+        // Pestaña en 2º plano: los setInterval se congelan → parar y re-arrancar limpio al volver,
+        // para que no quede un slide "pegado" mucho más que los demás.
+        document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else restart(); });
         if (n <= 1) { el('carPrev').style.display = 'none'; el('carNext').style.display = 'none'; }
 
         el('carousel').hidden = false;
