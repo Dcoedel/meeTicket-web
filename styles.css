@@ -10,17 +10,17 @@
   --text-3: #8a8a96;        /* text-tertiary */
   --border: #1b1b26;        /* border-default */
   --border-strong: #2c2c3a;
-  --primary: #8b5cf6;       /* accent (botones, h3) */
-  --primary-hover: #7c4df0;
-  --primary-active: #6d3ee0;
-  --link: #a78bfa;          /* enlaces de texto */
+  --primary: #6c63ff;       /* accent (botones, h3) — índigo del Panel (apps/dashboard) */
+  --primary-hover: #5a52e0;
+  --primary-active: #4f45d4;
+  --link: #6c63ff;          /* enlaces de texto — acento del Panel */
   --success: #34d399;       /* status-success */
   --danger: #e87272;        /* status-danger */
   --radius-card: 1.25rem;   /* ~bento */
   --radius-ctl: 0.75rem;    /* botones/inputs */
   --shadow-card: 0 2px 24px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.03);
-  /* wordmark meeTicket: mismo gradiente que la landing */
-  --wordmark: linear-gradient(95deg, #5bc3ea 0%, #8b5cf6 52%, #d0529d 100%);
+  /* wordmark meeTicket: gradiente EXACTO del Panel (apps/dashboard globals.css .wordmark) */
+  --wordmark: linear-gradient(to right, #22d3ee, #7c6cf0, #ec4899);
   color-scheme: dark;
 }
 
@@ -43,8 +43,11 @@ body.center { display: flex; justify-content: center; align-items: center; min-h
 
 /* Layouts */
 .container { text-align: center; padding: 40px 24px; max-width: 480px; width: 100%; }
-.container.doc { max-width: 720px; margin: 0 auto; text-align: left; padding: 40px 24px 80px; line-height: 1.7; }
-.container.doc .logo { display: block; text-align: center; }
+.container.doc { max-width: 960px; margin: 0 auto; text-align: left; padding: 40px 24px 80px; line-height: 1.7; }
+/* Cabecera: wordmark centrado SIN subrayado. display:block+width:fit-content (no 'block' a secas): con
+   bg-clip:text, la caja debe ser el ANCHO DEL TEXTO o el gradiente centrado solo revela el tramo central
+   (morado) y se pierden turquesa/rosa — mismo motivo que el inline-block del Panel. */
+.container.doc .logo { display: block; width: fit-content; margin-left: auto; margin-right: auto; text-decoration: none; }
 
 /* Cards / secciones */
 .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 32px 24px; }
@@ -58,7 +61,9 @@ h3 { color: var(--primary); font-size: 16px; margin: 20px 0 8px; }
 .container.doc h2 { margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 p { font-size: 15px; line-height: 1.6; margin-bottom: 16px; color: var(--text-2); }
 .container.doc p, .container.doc li { margin-bottom: 8px; color: var(--text); }
-a { color: var(--link); }
+a { color: var(--link); text-decoration: none; }
+/* Enlaces de texto de los documentos: acento del Panel, subrayado SOLO en hover (botones y wordmark excluidos). */
+.container.doc p a:hover, .container.doc li a:hover, .contact-box a:hover, .doc-footer a:hover { text-decoration: underline; }
 ul { padding-left: 20px; }
 
 /* Botones */
@@ -104,7 +109,7 @@ input:focus { border-color: var(--primary); }
 
 /* Legales: selector de idioma + fecha */
 .lang-switch { text-align: center; margin-bottom: 32px; display: flex; gap: 8px; justify-content: center; }
-.lang-switch button { background: var(--card); border: 1px solid var(--border); color: var(--text-2); padding: 8px 20px; border-radius: var(--radius-ctl); cursor: pointer; font-size: 14px; }
+.lang-switch button { background: var(--card); border: 1px solid var(--border); color: var(--text-2); padding: 8px 20px; border-radius: 999px; cursor: pointer; font-size: 14px; }
 .lang-switch button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .date { color: var(--text-3); font-size: 13px; text-align: center; margin-bottom: 24px; }
 

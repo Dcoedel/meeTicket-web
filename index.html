@@ -7,13 +7,14 @@
   <meta name="description" content="meeTicket es la ticketera social: compra tu entrada, descubre quién más va, chatea con tus meets y organiza tu grupo antes de que empiece el evento.">
   <!-- QUITAR noindex en el lanzamiento -->
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="meeTicket — La ticketera social">
   <meta property="og:description" content="Compra tu entrada y conoce a tu gente. La venta de entradas con una capa social encima.">
   <meta property="og:url" content="https://meeticket.app/">
-  <meta property="og:image" content="https://meeticket.app/icon-512.png">
+  <meta property="og:image" content="https://meeticket.app/icon-512.png?v=2">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +27,7 @@
       --bg:#0a0a0f; --band:#0c0c13; --card:#12121b;
       --border1:#1b1b26; --border2:#20202e; --border3:#2c2c3a;
       --text:#f4f4f5; --muted:#a1a1ad; --muted2:#8a8a96; --link:#c7c7d1;
-      --accent:#8b5cf6; --magenta:#d0529d; --azul:#5bc3ea; --ok:#34d399; --fecha:#b8a6e8;
+      --accent:#6c63ff; --magenta:#d0529d; --azul:#5bc3ea; --ok:#34d399; --fecha:#b8a6e8;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
@@ -37,7 +38,9 @@
     a:hover { color: var(--text); }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; border-radius: 6px; }
     .wrap { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
-    .wordmark { background: linear-gradient(95deg, var(--azul) 0%, var(--accent) 52%, var(--magenta) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    /* Gradiente EXACTO del Panel (apps/dashboard globals.css .wordmark), literal y desacoplado de --accent
+       (el stop central del wordmark #7c6cf0 ≠ el índigo del botón #6c63ff). */
+    .wordmark { background: linear-gradient(to right, #22d3ee, #7c6cf0, #ec4899); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .icon { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
     /* ── NAV ── */
@@ -63,11 +66,11 @@
     .cartelera { position: relative; height: 560px; overflow: hidden; background: var(--bg); border-bottom: 1px solid var(--border1); }
     /* Fallback de marca (capa base): se ve mientras carga y si la API falla/vacía */
     .hero-fallback { position: absolute; inset: 0; z-index: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 24px;
-      background: radial-gradient(60% 55% at 20% 20%, rgba(91,195,234,0.22), transparent 70%), radial-gradient(55% 50% at 85% 25%, rgba(208,82,157,0.20), transparent 72%), radial-gradient(80% 70% at 55% 100%, rgba(139,92,246,0.26), transparent 78%), linear-gradient(160deg, #0f0b1e, #0a0a14); }
+      background: radial-gradient(60% 55% at 20% 20%, rgba(91,195,234,0.22), transparent 70%), radial-gradient(55% 50% at 85% 25%, rgba(208,82,157,0.20), transparent 72%), radial-gradient(80% 70% at 55% 100%, rgba(108,99,255,0.26), transparent 78%), linear-gradient(160deg, #0f0b1e, #0a0a14); }
     .hero-fallback .fb-word { font-size: 56px; font-weight: 900; letter-spacing: -0.03em; }
     .hero-fallback .fb-sub { color: var(--muted); font-size: 18px; }
     .btn-primary { background: var(--accent); color: #fff; font-weight: 700; font-size: 16px; border-radius: 12px; padding: 15px 26px; display: inline-block; transition: transform .25s ease, background .25s ease, filter .25s ease; }
-    .btn-primary:hover { background: #7c4df0; color: #fff; }
+    .btn-primary:hover { background: #5a52e0; color: #fff; }
 
     .carousel { position: absolute; inset: 0; z-index: 1; }
     .carousel[hidden] { display: none; }
@@ -90,7 +93,7 @@
     .car-prev { left: 20px; } .car-next { right: 20px; }
     .car-dots { position: absolute; bottom: 22px; left: 0; right: 0; z-index: 3; display: flex; gap: 8px; justify-content: center; }
     .car-dot { width: 8px; height: 8px; border-radius: 999px; border: none; background: rgba(255,255,255,0.3); cursor: pointer; padding: 0; }
-    .car-dot.active { background: var(--text); width: 22px; }
+    .car-dot.active { background: var(--accent); width: 22px; }
 
     /* ── PRÓXIMOS EVENTOS ── */
     .section { border-top: 1px solid var(--border1); }
@@ -195,7 +198,7 @@
       .marquee-track { animation: marquee 90s linear infinite; }
       .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease-out, transform .6s ease-out; }
       .reveal.visible { opacity: 1; transform: none; }
-      .ev-card:hover, .mini-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(139,92,246,0.13); }
+      .ev-card:hover, .mini-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(108,99,255,0.13); }
       .btn-primary:hover, .btn-light:hover { transform: scale(1.02); }
       .sk::after { animation: shimmer 1.3s infinite; }
     }
