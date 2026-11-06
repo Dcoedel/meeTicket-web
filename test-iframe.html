@@ -77,6 +77,11 @@
     </div>
     <div class="controls">
       <input id="src" spellcheck="false" />
+      <select id="lang" title="Idioma de la tienda (?lang)">
+        <option value="es">Español</option><option value="en">English</option><option value="de">Deutsch</option>
+        <option value="fr">Français</option><option value="it">Italiano</option><option value="nl">Nederlands</option>
+        <option value="pl">Polski</option>
+      </select>
       <button id="load">Cargar</button>
       <button id="list" class="ghost">Ver listado</button>
       <button id="clear" class="ghost">Limpiar panel</button>
@@ -86,7 +91,7 @@
   <main>
     <!-- allow: web-share/clipboard-write → botón "Compartir" (navigator.share + copiar enlace). payment → Apple Pay
          y Google Pay pueden invocarse DENTRO del recuadro (sin este permiso el navegador los bloquea en el iframe). -->
-    <div class="stage"><iframe id="store" title="Tienda meeTicket" allow="web-share; clipboard-write; payment"></iframe></div>
+    <div class="stage"><iframe id="store" title="Tienda meeTicket" allow="payment; web-share; clipboard-write"></iframe></div>
     <aside>
       <div class="counts" id="counts"></div>
       <div class="feed" id="feed">
@@ -123,7 +128,17 @@
       try { var u = new URL(location.href); var e = u.searchParams.get('ev'); if (e) return STORE_ORIGIN + '/e/' + e; } catch (x) {}
       return DEFAULT_SRC;
     }
-    function setSrc(s) { input.value = s; iframe.src = s; }
+    var langSel = document.getElementById('lang');
+    // Idioma inicial: ?lang de esta página o 'es'.
+    try { var ql = new URL(location.href).searchParams.get('lang'); if (ql) langSel.value = ql; } catch (x) {}
+    // Igual que el snippet de Absurdia: la tienda SIEMPRE en modo embebido (?embed=1) y con el idioma elegido (?lang),
+    // también en la 1ª carga (antes iba sin embed=1 y la vista cambiaba al cambiar de idioma dentro del iframe).
+    function embedSrc(s) {
+      try { var u = new URL(s, STORE_ORIGIN); u.searchParams.set('embed', '1'); u.searchParams.set('lang', langSel.value || 'es'); return u.toString(); }
+      catch (x) { return s; }
+    }
+    function setSrc(s) { var e = embedSrc(s); input.value = e; iframe.src = e; }
+    langSel.addEventListener('change', function () { setSrc(input.value.trim() || DEFAULT_SRC); });
     function renderCounts() {
       countsEl.innerHTML = ORDER.map(function (k) {
         return '<span class="chip" style="color:' + COLORS[k] + '">' + k + '<em>' + counts[k] + '</em></span>';
