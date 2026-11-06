@@ -36,6 +36,9 @@
       background: var(--brand); color: #fff; border: 0; border-radius: 9px; padding: 8px 14px;
       font-size: 13px; font-weight: 600; cursor: pointer;
     }
+    .controls select, .controls .accent { background: var(--card); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 6px 9px; font-size: 13px; }
+    .controls .accent { display: inline-flex; align-items: center; gap: 6px; }
+    .controls .accent input[type=color] { width: 28px; height: 22px; border: 0; padding: 0; background: none; cursor: pointer; }
     .controls button.ghost { background: var(--card); border: 1px solid var(--border); color: var(--text); }
     main { flex: 1; display: flex; min-height: 0; }
     .stage { flex: 1.5; border-right: 1px solid var(--border); min-width: 0; background: #000; position: relative; }
@@ -82,6 +85,12 @@
         <option value="fr">Français</option><option value="it">Italiano</option><option value="nl">Nederlands</option>
         <option value="pl">Polski</option>
       </select>
+      <select id="theme" title="Colores de la tienda embebida (?theme / ?bg)">
+        <option value="">Colores de siempre</option><option value="light">Claro</option><option value="dark">Oscuro</option>
+        <option value="transparent">Transparente</option>
+      </select>
+      <label class="accent" title="Color de acento (?accent)"><input id="accentOn" type="checkbox" /> Acento
+        <input id="accent" type="color" value="#ff6600" /></label>
       <button id="load">Cargar</button>
       <button id="list" class="ghost">Ver listado</button>
       <button id="clear" class="ghost">Limpiar panel</button>
@@ -133,10 +142,28 @@
     try { var ql = new URL(location.href).searchParams.get('lang'); if (ql) langSel.value = ql; } catch (x) {}
     // Igual que el snippet de Absurdia: la tienda SIEMPRE en modo embebido (?embed=1) y con el idioma elegido (?lang),
     // también en la 1ª carga (antes iba sin embed=1 y la vista cambiaba al cambiar de idioma dentro del iframe).
+    // Colores (fase 2): Claro / Oscuro / Transparente + acento → parámetros ?theme&bg&accent de la tienda embebida.
+    var themeSel = document.getElementById('theme');
+    var accentOn = document.getElementById('accentOn');
+    var accentIn = document.getElementById('accent');
+    var stage = document.querySelector('.stage');
     function embedSrc(s) {
-      try { var u = new URL(s, STORE_ORIGIN); u.searchParams.set('embed', '1'); u.searchParams.set('lang', langSel.value || 'es'); return u.toString(); }
+      try {
+        var u = new URL(s, STORE_ORIGIN); u.searchParams.set('embed', '1'); u.searchParams.set('lang', langSel.value || 'es');
+        ['theme', 'bg', 'accent', 'surface', 'radius'].forEach(function (k) { u.searchParams.delete(k); });
+        var t = themeSel.value;
+        if (t === 'light' || t === 'dark') u.searchParams.set('theme', t);
+        if (t === 'transparent') { u.searchParams.set('theme', 'light'); u.searchParams.set('bg', 'transparent'); }
+        if (accentOn.checked) u.searchParams.set('accent', accentIn.value.replace('#', ''));
+        // Fondo del «sitio» detrás del iframe: blanco en claro/transparente (como una web normal), negro si no.
+        stage.style.background = (t === 'light' || t === 'transparent') ? '#ffffff' : '#000';
+        return u.toString();
+      }
       catch (x) { return s; }
     }
+    themeSel.addEventListener('change', function () { setSrc(input.value.trim() || DEFAULT_SRC); });
+    accentOn.addEventListener('change', function () { setSrc(input.value.trim() || DEFAULT_SRC); });
+    accentIn.addEventListener('change', function () { accentOn.checked = true; setSrc(input.value.trim() || DEFAULT_SRC); });
     function setSrc(s) { var e = embedSrc(s); input.value = e; iframe.src = e; }
     langSel.addEventListener('change', function () { setSrc(input.value.trim() || DEFAULT_SRC); });
     function renderCounts() {
